@@ -40,7 +40,7 @@ public class AccountGuide extends Node {
             DaxWalker.walkTo(Constants.ACCOUNT_GUIDE_AREA.getRandomTile());
             return;
         }
-sdfdsfdsf
+
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Just click on him to hear what he's got to say.")) {
              NPCHandler.talkToNPC(Constants.ACCOUNT_GUIDE);
              return;
