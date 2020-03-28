@@ -1,10 +1,7 @@
 package scripts.TutTheIsland.Nodes.CMasterChef;
 
 import org.tribot.api.General;
-import org.tribot.api2007.Game;
-import org.tribot.api2007.GameTab;
-import org.tribot.api2007.Interfaces;
-import org.tribot.api2007.NPCChat;
+import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
 import scripts.API.InterfaceHandler;
 import scripts.API.InventoryHandler;
@@ -28,7 +25,7 @@ public class MasterChef extends Node {
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "To make dough you must mix flour with water.")) {
             InventoryHandler.clickOnInventoryItem("Pot of flour");
-            InventoryHandler.clickOnInventoryItem("Bucket of water");
+            InventoryHandler.clickOnInventoryItem("Bucket of water", () -> Inventory.find("Bread dough").length > 0);
             return;
         }
 
@@ -39,6 +36,5 @@ public class MasterChef extends Node {
         }
 
         NPCHandler.talkToNPC(Constants.MASTER_CHEF);
-        General.sleep(2000,4000);
     }
 }

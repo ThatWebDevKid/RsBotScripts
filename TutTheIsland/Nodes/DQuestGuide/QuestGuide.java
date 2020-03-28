@@ -5,10 +5,7 @@ import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.types.RSInterface;
-import scripts.API.InterfaceHandler;
-import scripts.API.InventoryHandler;
-import scripts.API.NPCHandler;
-import scripts.API.ObjectHandler;
+import scripts.API.*;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
 import scripts.TutTheIsland.Utils.Constants;
@@ -26,14 +23,10 @@ public class QuestGuide extends Node {
         RSInterface chatInterface = Interfaces.get(263,1,0);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Click on the flashing icon to the left of your inventory.")) {
-            GameTab.TABS.QUESTS.open();
-        }
-
-        if (InterfaceHandler.interfaceContainsText(chatInterface, "Click on the flashing icon to the left of your inventory.")) {
-            GameTab.TABS.QUESTS.open();
+            TabsHandler.openTab(GameTab.TABS.QUESTS);
+            return;
         }
 
         NPCHandler.talkToNPC(Constants.QUEST_GUIDE);
-        General.sleep(2000,4000);
     }
 }

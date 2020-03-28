@@ -1,10 +1,13 @@
 package scripts.TutTheIsland.Nodes.IWizardHouse;
 
+import jdk.nashorn.internal.objects.Global;
 import org.tribot.api.General;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
+import scripts.API.GlobalConstants;
 import scripts.API.InterfaceHandler;
 import scripts.API.NPCHandler;
+import scripts.API.TabsHandler;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
 import scripts.TutTheIsland.Utils.Constants;
@@ -22,13 +25,13 @@ public class WizardHouse extends Node {
         RSInterface chatInterface = Interfaces.get(263,1,0);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "up the magic interface by clicking on the flashing icon.")) {
-            GameTab.TABS.MAGIC.open();
+            TabsHandler.openTab(GameTab.TABS.MAGIC);
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Look for the Wind Strike spell in your magic interface.")) {
             Magic.selectSpell("Wind Strike");
-            NPCHandler.attackNPC("Chicken", 15000, false);
+            NPCHandler.interactWithNPC("Chicken", GlobalConstants.CAST, () -> false, false);
             return;
         }
 
@@ -38,9 +41,9 @@ public class WizardHouse extends Node {
 
         if (NPCChat.getOptions() != null && NPCChat.getOptions()[2].contains("No, I'm not planning to do that.")) {
             NPCChat.selectOption(NPCChat.getOptions()[2], true);
+            return;
         }
 
         NPCHandler.talkToNPC(Constants.MAGIC_INSTRUCTOR);
-        General.sleep(2000,4000);
     }
 }

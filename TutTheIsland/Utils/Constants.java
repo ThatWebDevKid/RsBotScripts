@@ -61,7 +61,7 @@ public class Constants {
 
     // SURVIVAL AREA CONSTANTS
     public static final int SURVIVAL_EXPERT = 8503;
-    public static final int SURVIVAL_AREA_STATES[] = {20, 30, 40, 50, 70, 80, 90};
+    public static final int SURVIVAL_AREA_STATES[] = {20, 30, 40, 50,60, 70, 80, 90};
     public static final int FISHING_SPOT = 3317;
 
     // MASTER CHEF CONSTANTS
@@ -70,15 +70,17 @@ public class Constants {
 
     // QUEST GUIDE CONSTANTS
     public static final int QUEST_GUIDE = 3312;
-    public static final int QUEST_GUIDE_STATES[] = {220, 230, 240};
+    public static final int QUEST_GUIDE_STATES[] = {200, 220, 230, 240};
 
     // MINING INSTRUCTORS CONSTANTS
     public static final int MINING_INSTRUCTOR = 3311;
     public static final int MINING_INSTRUCTOR_STATES[] = {260, 300, 310, 320, 330, 340, 350};
+    public static final int COPPER_ROCKS = 10079;
+    public static final int TIN_ROCKS = 10080;
 
     // COMBAT AREA CONSTANTS
     public static final int COMBAT_INSTRUCTOR = 3307;
-    public static final int COMBAT_AREA_STATES[] = {370, 390, 400, 405, 410, 420, 430, 440, 450, 470, 480, 490};
+    public static final int COMBAT_AREA_STATES[] = {370, 390, 400, 405, 410, 420, 430, 440, 450, 460, 470, 480, 490};
 
     // ACCOUNT AREA CONSTANTS
     public static final int BANKER = 3318;

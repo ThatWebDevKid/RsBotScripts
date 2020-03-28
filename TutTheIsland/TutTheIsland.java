@@ -81,8 +81,6 @@ public class TutTheIsland extends Script {
                 node.execute();
                 General.sleep(General.random(2500, 3000));
             }
-            General.println(gameState);
-            General.sleep(100);
         }
     }
 }

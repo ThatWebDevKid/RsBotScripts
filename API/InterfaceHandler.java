@@ -6,16 +6,8 @@ import org.tribot.api2007.types.RSInterface;
 
 public class InterfaceHandler {
 
-    public static boolean interfaceIsValid(RSInterface runescapeInterface) {
-        return runescapeInterface != null;
-    }
-
-    public static boolean interfaceIsVisibleOnScreen(RSInterface runescapeInterface) {
-        return interfaceIsValid(runescapeInterface) &&  !runescapeInterface.isHidden();
-    }
-
     public static boolean interfaceContainsText(RSInterface runescapeInterface, CharSequence text) {
-        return interfaceIsVisibleOnScreen(runescapeInterface) &&
+        return Interfaces.isInterfaceSubstantiated(runescapeInterface) &&
                 runescapeInterface.getText().contains(text);
     }
 
@@ -36,9 +28,9 @@ public class InterfaceHandler {
     }
 
     public static boolean clickInterface(RSInterface runescapeInterface) {
-        if (interfaceIsVisibleOnScreen(runescapeInterface)) {
+        if (Interfaces.isInterfaceSubstantiated(runescapeInterface)) {
             runescapeInterface.click();
-            General.sleep(General.random(1000, 2000), General.random(3000,5000));
+            General.sleep(General.random(500, 1000), General.random(2000,3000));
             return true;
         }
         return false;

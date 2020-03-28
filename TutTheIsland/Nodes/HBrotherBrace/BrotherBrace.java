@@ -1,5 +1,6 @@
 package scripts.TutTheIsland.Nodes.HBrotherBrace;
 
+import javafx.scene.control.Tab;
 import org.tribot.api.General;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
@@ -7,6 +8,7 @@ import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.types.RSInterface;
 import scripts.API.InterfaceHandler;
 import scripts.API.NPCHandler;
+import scripts.API.TabsHandler;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
 import scripts.TutTheIsland.Utils.Constants;
@@ -24,16 +26,15 @@ public class BrotherBrace extends Node {
         RSInterface chatInterface = Interfaces.get(263,1,0);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Click on the flashing icon to open the Prayer menu.")) {
-            GameTab.TABS.PRAYERS.open();
+            TabsHandler.openTab(GameTab.TABS.PRAYERS);
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "on the flashing face icon to open your friends and ignore lists.")) {
-            GameTab.TABS.FRIENDS.open();
+            TabsHandler.openTab(GameTab.TABS.FRIENDS);
             return;
         }
 
         NPCHandler.talkToNPC(Constants.BROTHER_BRACE);
-        General.sleep(2000,4000);
     }
 }

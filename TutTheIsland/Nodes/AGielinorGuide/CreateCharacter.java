@@ -15,23 +15,16 @@ public class CreateCharacter extends Node {
 
     @Override
     public boolean validate() {
-//        boolean isCreatingCharacterStage = ;
-//        boolean chooseDisplayNameInterfaceOnScreen = Utils.interfaceIsVisibleOnScreen(Interfaces.get(558,3,1));
-//        boolean settingYourApperanceOnScreen = Utils.interfaceIsVisibleOnScreen(Interfaces.get(263, 1,0)) &&
-//                Interfaces.get(263, 1,0).getText().contains("Setting your appearance");
-//        return isCreatingCharacterStage &&
-//                (chooseDisplayNameInterfaceOnScreen || settingYourApperanceOnScreen);
         return TutTheIsland.gameState == 1;
     }
 
     @Override
     public void execute() {
         // Being asked to enter name
-        if (InterfaceHandler.interfaceIsVisibleOnScreen(Interfaces.get(162,44))) {
-            General.sleep(3000,4000);
+        if (Interfaces.isInterfaceSubstantiated(162,44)) {
             Keyboard.typeString("SirEatsAlot");
             Keyboard.pressEnter();
-            General.sleep(1000,3000);
+            General.sleep(General.random(500,1000),General.random(2000,3000));
         }
 
         // Being asked to select a recommended name text is available, then randomly choose one of the 3 suggested names

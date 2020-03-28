@@ -3,10 +3,7 @@ package scripts.TutTheIsland.Nodes.BSurvivalExpert;
 import org.tribot.api.General;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
-import scripts.API.InterfaceHandler;
-import scripts.API.InventoryHandler;
-import scripts.API.NPCHandler;
-import scripts.API.ObjectHandler;
+import scripts.API.*;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
 import scripts.TutTheIsland.Utils.Constants;
@@ -24,8 +21,7 @@ public class SurvivalExpert extends Node {
         RSInterface chatInterface = Interfaces.get(263,1,0);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "To view the item you've been given,")) {
-            GameTab.TABS.INVENTORY.open();
-            General.sleep(2000,5000);
+            TabsHandler.openTab(GameTab.TABS.INVENTORY);
             return;
         }
 
@@ -35,8 +31,7 @@ public class SurvivalExpert extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Click on the flashing bar graph icon")) {
-            GameTab.TABS.STATS.open();
-            General.sleep(2000,5000);
+            TabsHandler.openTab(GameTab.TABS.STATS);
             return;
         }
 
@@ -46,26 +41,19 @@ public class SurvivalExpert extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "click on the tinderbox in your inventory. Then, with the tinderbox highlighted,")) {
-            if (!GameTab.TABS.INVENTORY.isOpen()) {
-                GameTab.TABS.INVENTORY.open();
-                General.sleep(1000);
-            }
+            TabsHandler.openTab(GameTab.TABS.INVENTORY);
             InventoryHandler.clickOnInventoryItem("Tinderbox");
-            InventoryHandler.clickOnInventoryItem("Logs");
+            InventoryHandler.clickOnInventoryItem("Logs", () -> false);
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Now it's time to get cooking.")) {
-            if (!GameTab.TABS.INVENTORY.isOpen()) {
-                GameTab.TABS.INVENTORY.open();
-                General.sleep(1000);
-            }
+            TabsHandler.openTab(GameTab.TABS.INVENTORY);
             InventoryHandler.clickOnInventoryItem("Raw shrimps");
-            ObjectHandler.clickOnObject("Fire");
+            ObjectHandler.interactWithObject("Fire", "Use");
             return;
         }
 
         NPCHandler.talkToNPC(Constants.SURVIVAL_EXPERT);
-        General.sleep(2000,4000);
     }
 }
