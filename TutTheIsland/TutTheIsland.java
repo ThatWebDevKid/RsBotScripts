@@ -27,7 +27,7 @@ import java.util.Collections;
 
 @ScriptManifest(
         authors = {"ThatWebDevKid"},
-        category = "Tutorial Island",
+        category = "Quests",
         name = "TutTheIsland",
         gameMode = 1,
         description = "Tutorial Island Bot by ThatWebDevKid! If you like it, please leave a comment and let me know! Any problems or bugs you run into," +
