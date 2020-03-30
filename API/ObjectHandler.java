@@ -54,11 +54,11 @@ public class ObjectHandler {
                 Timing.waitCondition(() -> {
                     General.sleep(500);
                     return Player.getAnimation() != -1;
-                }, General.random(10000, 15000));
+                }, General.random(2000, 3000));
                 Timing.waitCondition(() -> {
                     General.sleep(500);
                     return Player.getAnimation() == -1;
-                }, General.random(10000, 15000));
+                }, General.random(2000, 3000));
                 return;
             }
         }

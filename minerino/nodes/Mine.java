@@ -20,7 +20,7 @@ public class Mine extends Node {
     public void execute() {
         if (Player.getAnimation() == -1) {
             TabsHandler.openTab(GameTab.TABS.INVENTORY);
-            ObjectHandler.interactWithObject(Minerino.ore, "Mine");
+            ObjectHandler.interactWithObject(Minerino.ore, "");
         }
     }
 }

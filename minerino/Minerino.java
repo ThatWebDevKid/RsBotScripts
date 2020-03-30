@@ -1,6 +1,7 @@
 package scripts.minerino;
 
 import org.tribot.api.General;
+import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Login;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.script.Script;
@@ -34,7 +35,7 @@ public class Minerino extends Script {
     public static ArrayList<Node> Nodes = new ArrayList<>();
     public static int ore = Constants.IRON_ORE;
     public static RSArea miningLocation = Constants.AL_KHARID;
-    public static RunescapeBank bankingLocation = RunescapeBank.AL_KHARID;
+    public static RunescapeBank bankingLocation = RunescapeBank.FALADOR_EAST;
     public static String miningMethod = "Dropping";
 
 
@@ -44,7 +45,9 @@ public class Minerino extends Script {
                 return new DaxCredentials("sub_DPjXXzL5DeSiPf", "PUBLIC-KEY");
             }
         });
-        Login.login();
+        if (Login.getLoginState() == Login.STATE.LOGINSCREEN) {
+            Login.login();
+        }
         Collections.addAll(
                 Nodes,
                 new Mine(),
@@ -52,6 +55,8 @@ public class Minerino extends Script {
                 new Banking(),
                 new Dropping()
         );
+        Inventory.setDroppingPattern(Inventory.DROPPING_PATTERN.ZIGZAG);
+        Inventory.setDroppingMethod(Inventory.DROPPING_METHOD.SHIFT);
     }
 
     @Override

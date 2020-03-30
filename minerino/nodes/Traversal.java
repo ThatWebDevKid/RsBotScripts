@@ -15,7 +15,7 @@ public class Traversal extends Node {
     }
     public boolean validate() {
         shouldGoToBank = Inventory.isFull() && Minerino.miningMethod.equalsIgnoreCase("Banking");
-        shouldGoToMine = Inventory.getAll().length <= 0;
+        shouldGoToMine = Inventory.getAll().length <= 2;
         return shouldGoToBank || shouldGoToMine;
     }
     public void execute() {

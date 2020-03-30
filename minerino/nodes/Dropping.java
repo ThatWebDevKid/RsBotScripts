@@ -13,6 +13,6 @@ public class Dropping extends Node {
         return Minerino.miningMethod.equalsIgnoreCase("Dropping") && Inventory.isFull();
     }
     public void execute() {
-        Inventory.dropAllExcept();
+        Inventory.dropAllExcept(1275);
     }
 }

@@ -15,7 +15,7 @@ public class Banking extends Node {
     }
     public void execute() {
         if (org.tribot.api2007.Banking.openBank()) {
-            org.tribot.api2007.Banking.depositAll();
+            org.tribot.api2007.Banking.depositAllExcept(1275);
         }
     }
 }
