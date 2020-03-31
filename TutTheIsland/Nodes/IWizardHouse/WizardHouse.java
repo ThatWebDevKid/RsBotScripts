@@ -4,6 +4,7 @@ import jdk.nashorn.internal.objects.Global;
 import org.tribot.api.General;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
+import org.tribot.api2007.types.RSNPC;
 import scripts.API.GlobalConstants;
 import scripts.API.InterfaceHandler;
 import scripts.API.NPCHandler;
@@ -23,6 +24,8 @@ public class WizardHouse extends Node {
     }
     public void execute() {
         RSInterface chatInterface = Interfaces.get(263,1,0);
+        RSNPC[] magicInstructor = NPCs.findNearest(Constants.MAGIC_INSTRUCTOR);
+        String[] options = NPCChat.getOptions();
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "up the magic interface by clicking on the flashing icon.")) {
             TabsHandler.openTab(GameTab.TABS.MAGIC);
@@ -30,20 +33,23 @@ public class WizardHouse extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Look for the Wind Strike spell in your magic interface.")) {
-            Magic.selectSpell("Wind Strike");
-            NPCHandler.interactWithNPC("Chicken", GlobalConstants.CAST, () -> false, false);
+            RSNPC[] chicken = NPCs.findNearest("Chicken");
+            if(Magic.selectSpell("Wind Strike")) {
+                NPCHandler.interactWithNPC(chicken, GlobalConstants.CAST, false);
+            }
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(Interfaces.get(219,1,0), "Do you want to go to the mainland?")) {
             InterfaceHandler.clickInterface(Interfaces.get(219,1,1));
+            return;
         }
 
-        if (NPCChat.getOptions() != null && NPCChat.getOptions()[2].contains("No, I'm not planning to do that.")) {
+        if (options != null && options.length > 0 && options[2] != null  && options[2].contains("No, I'm not planning to do that.")) {
             NPCChat.selectOption(NPCChat.getOptions()[2], true);
             return;
         }
 
-        NPCHandler.talkToNPC(Constants.MAGIC_INSTRUCTOR);
+        NPCHandler.talkToNPC(magicInstructor);
     }
 }

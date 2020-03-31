@@ -5,7 +5,9 @@ import org.tribot.api.General;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
 import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.NPCs;
 import org.tribot.api2007.types.RSInterface;
+import org.tribot.api2007.types.RSNPC;
 import scripts.API.InterfaceHandler;
 import scripts.API.NPCHandler;
 import scripts.API.TabsHandler;
@@ -24,6 +26,7 @@ public class BrotherBrace extends Node {
     }
     public void execute() {
         RSInterface chatInterface = Interfaces.get(263,1,0);
+        RSNPC[] brotherBrace = NPCs.findNearest(Constants.BROTHER_BRACE);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Click on the flashing icon to open the Prayer menu.")) {
             TabsHandler.openTab(GameTab.TABS.PRAYERS);
@@ -35,6 +38,6 @@ public class BrotherBrace extends Node {
             return;
         }
 
-        NPCHandler.talkToNPC(Constants.BROTHER_BRACE);
+        NPCHandler.talkToNPC(brotherBrace);
     }
 }

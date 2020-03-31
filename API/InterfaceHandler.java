@@ -24,14 +24,11 @@ public class InterfaceHandler {
             }
         }
         return false;
-
     }
 
     public static boolean clickInterface(RSInterface runescapeInterface) {
         if (Interfaces.isInterfaceSubstantiated(runescapeInterface)) {
-            runescapeInterface.click();
-            General.sleep(General.random(500, 1000), General.random(2000,3000));
-            return true;
+            return runescapeInterface.click();
         }
         return false;
     }

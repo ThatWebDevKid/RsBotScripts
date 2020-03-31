@@ -18,9 +18,9 @@ public class Mine extends Node {
         return !Inventory.isFull() && Player.getPosition().distanceTo(Minerino.miningLocation.getRandomTile()) < 10;
     }
     public void execute() {
-        if (Player.getAnimation() == -1) {
-            TabsHandler.openTab(GameTab.TABS.INVENTORY);
-            ObjectHandler.interactWithObject(Minerino.ore, "");
-        }
+//        if (Player.getAnimation() == -1) {
+//            TabsHandler.openTab(GameTab.TABS.INVENTORY);
+//            ObjectHandler.interactWithObject(Minerino.ore, "");
+//        }
     }
 }

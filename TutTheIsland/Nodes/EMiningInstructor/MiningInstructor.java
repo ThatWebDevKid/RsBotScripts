@@ -1,13 +1,8 @@
 package scripts.TutTheIsland.Nodes.EMiningInstructor;
 
 import org.tribot.api.General;
-import org.tribot.api2007.Game;
-import org.tribot.api2007.GameTab;
-import org.tribot.api2007.Interfaces;
-import org.tribot.api2007.Player;
-import org.tribot.api2007.types.RSCharacter;
-import org.tribot.api2007.types.RSInterface;
-import org.tribot.api2007.types.RSPlayer;
+import org.tribot.api2007.*;
+import org.tribot.api2007.types.*;
 import scripts.API.InterfaceHandler;
 import scripts.API.NPCHandler;
 import scripts.API.ObjectHandler;
@@ -27,24 +22,29 @@ public class MiningInstructor extends Node {
     public void execute() {
         RSInterface chatInterface = Interfaces.get(263,1,0);
         RSInterface anvilInterface = Interfaces.get(312,1,1);
+        RSNPC[] miningInstructor = NPCs.findNearest(Constants.MINING_INSTRUCTOR);
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Now that you have some tin ore, you just need some copper.")) {
-            ObjectHandler.clickOnObject(Constants.COPPER_ROCKS);
+            RSObject[] copperRocks = Objects.find(ObjectHandler.DEFAULT_DISTANCE, Constants.COPPER_ROCKS);
+            ObjectHandler.interactWithObject(copperRocks, "");
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "To mine a rock, all you need to do is click on it.")) {
-            ObjectHandler.clickOnObject(Constants.TIN_ROCKS);
+            RSObject[] tinRocks = Objects.find(ObjectHandler.DEFAULT_DISTANCE, Constants.TIN_ROCKS);
+            ObjectHandler.interactWithObject(tinRocks, "");
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "You now have some tin ore and some copper ore.")) {
-            ObjectHandler.clickOnObject("Furnace");
+            RSObject[] furnace = Objects.find(ObjectHandler.DEFAULT_DISTANCE, "Furnace");
+            ObjectHandler.interactWithObject(furnace, "");
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "click on the anvil, or alternatively use the bar on it.") ||
                 InterfaceHandler.interfaceContainsText(chatInterface, "an anvil to open the smithing menu,")) {
-            ObjectHandler.clickOnObject("Anvil");
+            RSObject[] anvil = Objects.find(ObjectHandler.DEFAULT_DISTANCE, "Anvil");
+            ObjectHandler.interactWithObject(anvil, "");
             return;
         }
 
@@ -54,6 +54,6 @@ public class MiningInstructor extends Node {
             return;
         }
 
-        NPCHandler.talkToNPC(Constants.MINING_INSTRUCTOR);
+        NPCHandler.talkToNPC(miningInstructor);
     }
 }

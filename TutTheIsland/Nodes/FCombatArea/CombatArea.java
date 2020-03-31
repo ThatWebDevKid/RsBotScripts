@@ -3,6 +3,8 @@ package scripts.TutTheIsland.Nodes.FCombatArea;
 import org.tribot.api.General;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
+import org.tribot.api2007.types.RSItem;
+import org.tribot.api2007.types.RSNPC;
 import scripts.API.*;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
@@ -20,6 +22,8 @@ public class CombatArea extends Node {
     }
     public void execute() {
         RSInterface chatInterface = Interfaces.get(263,1,0);
+        RSNPC[] combatInstructor = NPCs.findNearest(Constants.COMBAT_INSTRUCTOR);
+        RSNPC[] giantRat;
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "You now have access to a new interface. Click on the flashing icon of a man,")) {
             TabsHandler.openTab(GameTab.TABS.EQUIPMENT);
@@ -34,7 +38,8 @@ public class CombatArea extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Click your dagger to equip it.")) {
-            InventoryHandler.clickOnInventoryItem("Bronze dagger");
+            RSItem[] bronzeDagger = Inventory.find("Bronze Dagger");
+            ItemHandler.clickOnInventoryItem(bronzeDagger, "");
             return;
         }
 
@@ -43,8 +48,10 @@ public class CombatArea extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Try this out now by swapping your dagger for the sword and shield that the combat instructor gave you.")) {
-            InventoryHandler.clickOnInventoryItem("Bronze sword");
-            InventoryHandler.clickOnInventoryItem("Wooden shield");
+            RSItem[] bronzeSword = Inventory.find("Bronze sword");
+            RSItem[] woodenShield = Inventory.find("Wooden shield");
+            ItemHandler.clickOnInventoryItem(bronzeSword, "");
+            ItemHandler.clickOnInventoryItem(woodenShield, "");
             return;
         }
 
@@ -61,7 +68,8 @@ public class CombatArea extends Node {
         if (InterfaceHandler.interfaceContainsText(chatInterface, "It's time to slay some rats!") ||
         InterfaceHandler.interfaceContainsText(chatInterface, "While you are fighting you will see a bar over your head.")) {
             if (!Combat.isUnderAttack()) {
-                NPCHandler.interactWithNPC("Giant rat", GlobalConstants.ATTACK, () -> false, true);
+                giantRat = NPCs.findNearest("Giant rat");
+                NPCHandler.attackNPC(giantRat, true);
                 return;
             }
         }
@@ -72,12 +80,15 @@ public class CombatArea extends Node {
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Now you have a bow and some arrows.")) {
-            InventoryHandler.clickOnInventoryItem("Shortbow");
-            InventoryHandler.clickOnInventoryItem("Bronze arrow");
-            NPCHandler.interactWithNPC("Giant rat", GlobalConstants.ATTACK, () -> false, false);
+            giantRat = NPCs.findNearest("Giant rat");
+            RSItem[] shortbow = Inventory.find("Shortbow");
+            RSItem[] bronzeArrow = Inventory.find("Bronze arrow");
+            ItemHandler.clickOnInventoryItem(shortbow, "");
+            ItemHandler.clickOnInventoryItem(bronzeArrow, "");
+            NPCHandler.interactWithNPC(giantRat, "Attack", false);
             return;
         }
 
-        NPCHandler.talkToNPC(Constants.COMBAT_INSTRUCTOR);
+        NPCHandler.talkToNPC(combatInstructor);
     }
 }

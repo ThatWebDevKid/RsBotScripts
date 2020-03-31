@@ -8,14 +8,10 @@ import org.tribot.api2007.Objects;
 public class TabsHandler {
     public static boolean openTab (GameTab.TABS tab) {
         if (tab.isOpen()) { return true; };
-
-        tab.open();
-        Timing.waitCondition(() -> {
+        return tab.open() && Timing.waitCondition(() -> {
             General.sleep(500);
             return tab.isOpen();
-        }, General.random(2000, 5000));
-
-        return tab.isOpen();
+        }, General.random(3000, 5000));
     }
 
 }
