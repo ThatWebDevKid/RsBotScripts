@@ -3,14 +3,12 @@ package scripts.TutTheIsland.Nodes.BSurvivalExpert;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.*;
-import org.tribot.api2007.types.RSInterface;
-import org.tribot.api2007.types.RSItem;
-import org.tribot.api2007.types.RSNPC;
-import org.tribot.api2007.types.RSObject;
+import org.tribot.api2007.types.*;
 import scripts.API.*;
 import scripts.TutTheIsland.API.Node;
 import scripts.TutTheIsland.TutTheIsland;
 import scripts.TutTheIsland.Utils.Constants;
+import scripts.dax_api.api_lib.DaxWalker;
 
 import java.util.Arrays;
 
@@ -51,17 +49,45 @@ public class SurvivalExpert extends Node {
         if (InterfaceHandler.interfaceContainsText(chatInterface, "click on the tinderbox in your inventory. Then, with the tinderbox highlighted,")) {
             RSItem[] tinderBox = Inventory.find("Tinderbox");
             RSItem[] logs = Inventory.find("Logs");
-            if (ItemHandler.clickOnInventoryItem(tinderBox, "")) {
-                ItemHandler.clickOnInventoryItem(logs, "");
+            RSObject[] fires = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Fire");
+
+            // If we are standing on a fire then we we will walk somewhere random to hopefully not be standing on a fire
+            if (fires.length > 0 && Player.getRSPlayer().getPosition().distanceTo(fires[0].getPosition()) == 0) {
+                DaxWalker.walkTo(Constants.SURVIVAL_AREA.getRandomTile());
+            } else {
+                // If we aren't standing on a fire, lets make the fire!
+                if (ItemHandler.clickOnInventoryItem(tinderBox, "")) {
+                    ItemHandler.clickOnInventoryItem(logs, "");
+                }
             }
+
             return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Now it's time to get cooking.")) {
             RSItem[] rawShrimps = Inventory.find("Raw shrimps");
-            if (ItemHandler.clickOnInventoryItem(rawShrimps, "")) {
-                RSObject[] fires = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Fire");
-                ObjectHandler.interactWithObject(fires, "Use");
+            RSObject[] fires = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Fire");
+
+            // If a fire exist and we successfully click on the shrimp
+            if (fires.length > 0 && ItemHandler.clickOnInventoryItem(rawShrimps, "")) {
+                ObjectHandler.interactWithObject(fires, "Use Raw Shrimps ->");
+            } else {
+                // We need to make fire
+                RSObject[] trees = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Tree");
+                ObjectHandler.interactWithObject(trees, "");
+                RSItem[] tinderBox = Inventory.find("Tinderbox");
+                RSItem[] logs = Inventory.find("Logs");
+                fires = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Fire");
+
+                // If we are standing on a fire then we we will walk somewhere random to hopefully not be standing on a fire
+                if (fires.length > 0 && Player.getRSPlayer().getPosition().distanceTo(fires[0].getPosition()) == 0) {
+                    DaxWalker.walkTo(Constants.SURVIVAL_AREA.getRandomTile());
+                } else {
+                    // If we aren't standing on a fire, lets make the fire!
+                    if (ItemHandler.clickOnInventoryItem(tinderBox, "")) {
+                        ItemHandler.clickOnInventoryItem(logs, "");
+                    }
+                }
             }
             return;
         }

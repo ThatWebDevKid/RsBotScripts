@@ -25,22 +25,37 @@ public class NPCHandler {
     private static boolean rightClickNPC (RSNPC npc, String optionToSelect) {
         if (npc.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
-            if (ChooseOption.isOptionValid(optionToSelect)) {
-                return ChooseOption.select(optionToSelect);
+            String optionToSelectFullString = optionToSelect + " " + npc.getDefinition().getName();
+            General.println(optionToSelectFullString);
+            if (ChooseOption.isOptionValid(optionToSelectFullString)) {
+                General.println("OPTION IS VALID");
+                return ChooseOption.select(optionToSelectFullString);
+            } else {
+                ChooseOption.select("Cancel");
             }
         }
         return false;
     }
 
     public static boolean interactWithNPC (RSNPC[] npcs, String optionToSelect, boolean closeInteract) {
-        if (npcFound(npcs)) {
+        if (npcFound(npcs) && Player.getRSPlayer().getInteractingCharacter() == null) {
             RSNPC npc = npcs[0];
             boolean walkToAndInView = true;
 
             if (!npcValid(npc) && closeInteract) {
-                DaxWalker.walkTo(npc.getPosition());
-                npc.adjustCameraTo();
+                General.println(("NPC IS NOT VALID!"));
+                if(DaxWalker.walkTo(npc.getPosition())) {
+                    General.println("Using Dax Walker to walk to NPC");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getPosition()) < 5, General.random(5000, 10000));
+                    npc.adjustCameraTo();
+                } else if (WebWalking.walkTo(npc.getAnimablePosition())) {
+                    General.println("Using Web walker to walk to NPC");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    npc.adjustCameraTo();
+                }
                 walkToAndInView = npcValid(npc);
+            } else {
+                walkToAndInView = npc.adjustCameraTo() && npcValid(npc);
             }
 
             if (walkToAndInView && npcValid(npc)) {
@@ -49,6 +64,10 @@ public class NPCHandler {
             }
         }
         return false;
+    }
+
+    public static boolean interactWithNPC (RSNPC[] npcs, String optionToSelect) {
+        return interactWithNPC(npcs, optionToSelect, true);
     }
 
     public static boolean talkToNPC (RSNPC[] npcs) {
@@ -67,7 +86,7 @@ public class NPCHandler {
                 General.sleep(500);
                 boolean talkingToNPC = NPCChat.getMessage() != null && NPCChat.getName() != null;
                 return talkingToNPC;
-            }, General.random(3000, 5000));
+            }, General.random(5000, 10000));
         }
 
         return false;
@@ -78,14 +97,15 @@ public class NPCHandler {
         if (interactWithNPC(npcs,  GlobalConstants.ATTACK, closeRangeContact)) {
             return Timing.waitCondition(() -> {
                 General.sleep(500);
-                return Combat.isUnderAttack();
-            }, General.random(6000, 10000)) &&
+                RSPlayer player = Player.getRSPlayer();
+                return player != null && player.getInteractingIndex() != -1 && player.getInteractingCharacter() != null;
+            }, General.random(10000, 15000)) &&
             Timing.waitCondition(() -> {
                 General.sleep(500);
-                return !Combat.isUnderAttack();
-            }, General.random(8000, 15000));
+                RSPlayer player = Player.getRSPlayer();
+                return player != null && player.getInteractingIndex() == -1 && player.getInteractingCharacter() == null;
+            }, General.random(10000, 15000));
         }
         return false;
     }
-
 }

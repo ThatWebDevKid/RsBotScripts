@@ -24,6 +24,11 @@ public class CreateCharacter extends Node {
     public void execute() {
         RSInterfaceMaster masterInterface = Interfaces.get(558);
 
+        if (InterfaceHandler.interfaceContainsText(Interfaces.get(263, 1, 0), "Choosing a Display Name") && Interfaces.isInterfaceSubstantiated(masterInterface)) {
+            InterfaceHandler.clickInterface(Interfaces.get(558, 17, 9));
+        }
+
+
         // Being asked to enter name
         if (Interfaces.isInterfaceSubstantiated(162,44)) {
             Keyboard.typeString("SirEatsAlot");
@@ -32,7 +37,7 @@ public class CreateCharacter extends Node {
         }
 
         // Being asked to select a recommended name text is available, then randomly choose one of the 3 suggested names
-        if (masterInterface != null && InterfaceHandler.interfaceContainsText(masterInterface.getChild(12), "Sorry, this display name is <col=ff0000>not available</col>")) {
+        if (Interfaces.isInterfaceSubstantiated(masterInterface) && InterfaceHandler.interfaceContainsText(masterInterface.getChild(12), "Sorry, this display name is <col=ff0000>not available</col>")) {
             switch (General.random(0, 2)) {
                 case 0:
                     InterfaceHandler.clickInterface(masterInterface.getChild(14));
@@ -47,7 +52,7 @@ public class CreateCharacter extends Node {
         }
 
         // If display name is available, click the set name button
-        if (masterInterface != null && InterfaceHandler.interfaceContainsText(masterInterface.getChild(12), "Great! This display name is")) {
+        if (Interfaces.isInterfaceSubstantiated(masterInterface) && InterfaceHandler.interfaceContainsText(masterInterface.getChild(12), "Great! This display name is")) {
             InterfaceHandler.clickInterface(masterInterface.getChild(18));
         }
 

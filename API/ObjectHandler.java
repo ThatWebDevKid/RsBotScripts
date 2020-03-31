@@ -3,9 +3,7 @@ package scripts.API;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
-import org.tribot.api2007.ChooseOption;
-import org.tribot.api2007.Objects;
-import org.tribot.api2007.Player;
+import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSObject;
 import scripts.dax_api.api_lib.DaxWalker;
@@ -27,8 +25,9 @@ public class ObjectHandler {
     private static boolean rightClickObject (RSObject object, String optionToSelect) {
         if (object.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
-            if (ChooseOption.isOptionValid(optionToSelect)) {
-                return ChooseOption.select(optionToSelect);
+            String optionToSelectFullString = optionToSelect + " " + object.getDefinition().getName();
+            if (ChooseOption.isOptionValid(optionToSelectFullString)) {
+                return ChooseOption.select(optionToSelectFullString);
             }
         }
         return false;
@@ -40,14 +39,21 @@ public class ObjectHandler {
             boolean walkToAndInView = true;
 
             if (!objectValid(object)) {
-                walkToAndInView = !objectValid(object) && Timing.waitCondition(() -> {
-                    General.sleep(500);
-                    return DaxWalker.walkTo(object.getPosition()) && object.adjustCameraTo();
-                }, General.random(5000, 10000));
+                if (DaxWalker.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Dax walker to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                } else if (WebWalking.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Web walker to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                }
+                walkToAndInView = objectValid(object);
             }
 
             if (walkToAndInView && objectValid(object)) {
                 boolean successfullyClicked = (optionToSelect == "") ? object.click() : rightClickObject(object, optionToSelect);
+                General.println("Object Sucessfully clicked? : " + successfullyClicked);
                 return successfullyClicked && Timing.waitCondition(() -> {
                     General.sleep(500);
                     return Player.getAnimation() != -1;
@@ -59,6 +65,10 @@ public class ObjectHandler {
             }
         }
         return false;
+    }
+
+    public static boolean interactWithObject(RSObject[] objects) {
+        return interactWithObject(objects, "" );
     }
 
 }

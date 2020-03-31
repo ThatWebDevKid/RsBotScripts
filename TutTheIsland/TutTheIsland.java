@@ -69,6 +69,7 @@ public class TutTheIsland extends Script {
             loop();
 
             if (gameState == 1000) {
+                General.println("FINISHED! LOGGING YOU OUT NOW :)");
                 Login.logout();
                 break;
             }

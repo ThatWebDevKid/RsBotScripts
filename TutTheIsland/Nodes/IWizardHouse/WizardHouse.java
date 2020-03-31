@@ -35,7 +35,7 @@ public class WizardHouse extends Node {
         if (InterfaceHandler.interfaceContainsText(chatInterface, "Look for the Wind Strike spell in your magic interface.")) {
             RSNPC[] chicken = NPCs.findNearest("Chicken");
             if(Magic.selectSpell("Wind Strike")) {
-                NPCHandler.interactWithNPC(chicken, GlobalConstants.CAST, false);
+                NPCHandler.interactWithNPC(chicken, GlobalConstants.CAST + " Wind Strike ->", false);
             }
             return;
         }

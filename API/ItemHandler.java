@@ -22,8 +22,13 @@ public class ItemHandler {
     private static boolean rightClickInventoryItem (RSItem item, String optionToSelect) {
         if (item.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
-            if (ChooseOption.isOptionValid(optionToSelect)) {
-                return ChooseOption.select(optionToSelect);
+            String optionToSelectFullString = optionToSelect + " " + item.getDefinition().getName();
+            if (ChooseOption.isOptionValid(optionToSelectFullString)) {
+                return ChooseOption.select(optionToSelectFullString);
+            } else if (ChooseOption.isOptionValid("Cancel")) {
+                if (ChooseOption.select("Cancel")) {
+                    return rightClickInventoryItem(item, optionToSelect);
+                }
             }
         }
         return false;
@@ -32,8 +37,9 @@ public class ItemHandler {
     private static boolean rightClickGroundItem (RSGroundItem item, String optionToSelect) {
         if (item.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
-            if (ChooseOption.isOptionValid(optionToSelect)) {
-                return ChooseOption.select(optionToSelect);
+            String optionToSelectFullString = optionToSelect + " " + item.getDefinition().getName();
+            if (ChooseOption.isOptionValid(optionToSelectFullString)) {
+                return ChooseOption.select(optionToSelectFullString);
             }
         }
         return false;
@@ -61,5 +67,13 @@ public class ItemHandler {
             return successfullyClicked;
         }
         return false;
+    }
+
+    public static boolean clickOnInventoryItem (RSItem[] inventoryItems) {
+        return clickOnInventoryItem(inventoryItems, "");
+    }
+
+    public static boolean clickOnGroundItem (RSGroundItem[] groundItems) {
+        return clickOnGroundItem(groundItems, "");
     }
 }
