@@ -4,11 +4,9 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
 import org.tribot.api2007.*;
-import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSObject;
 import scripts.dax_api.api_lib.DaxWalker;
 
-import java.util.function.BooleanSupplier;
 
 public class ObjectHandler {
     public static final int DEFAULT_DISTANCE = 15;
@@ -20,7 +18,7 @@ public class ObjectHandler {
     private static boolean objectValid (RSObject object) {
         return object.isOnScreen() &&
                 object.isClickable() &&
-                PathFinding.canReach(object.getAnimablePosition(), false);
+                PathFinding.canReach(object.getAnimablePosition(), true);
     }
 
     private static boolean rightClickObject (RSObject object, String optionToSelect) {
