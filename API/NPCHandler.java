@@ -19,7 +19,7 @@ public class NPCHandler {
     }
 
     private static boolean npcValid (RSNPC npc) {
-        return npc.isOnScreen() && npc.isClickable();
+        return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), false);
     }
 
     private static boolean rightClickNPC (RSNPC npc, String optionToSelect) {
@@ -44,9 +44,9 @@ public class NPCHandler {
 
             if (!npcValid(npc) && closeInteract) {
                 General.println(("NPC IS NOT VALID!"));
-                if(DaxWalker.walkTo(npc.getPosition())) {
+                if (DaxWalker.walkTo(npc.getAnimablePosition())) {
                     General.println("Using Dax Walker to walk to NPC");
-                    Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getPosition()) < 5, General.random(5000, 10000));
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getAnimablePosition()) < 5, General.random(5000, 10000));
                     npc.adjustCameraTo();
                 } else if (WebWalking.walkTo(npc.getAnimablePosition())) {
                     General.println("Using Web walker to walk to NPC");

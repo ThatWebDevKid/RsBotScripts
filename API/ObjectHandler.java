@@ -19,7 +19,8 @@ public class ObjectHandler {
 
     private static boolean objectValid (RSObject object) {
         return object.isOnScreen() &&
-                object.isClickable();
+                object.isClickable() &&
+                PathFinding.canReach(object.getAnimablePosition(), false);
     }
 
     private static boolean rightClickObject (RSObject object, String optionToSelect) {
