@@ -1,6 +1,8 @@
 package scripts.minerino.nodes;
 
 import org.tribot.api.General;
+import org.tribot.api.util.abc.ABCUtil;
+import org.tribot.api.util.abc.preferences.OpenBankPreference;
 import org.tribot.api2007.Inventory;
 import scripts.API.Node;
 import scripts.API.ObjectHandler;
@@ -14,9 +16,7 @@ public class Banking extends Node {
         return org.tribot.api2007.Banking.isInBank() && Inventory.isFull() && Minerino.miningMethod.equalsIgnoreCase("Banking");
     }
     public void execute() {
-        if (org.tribot.api2007.Banking.openBank()) {
-            org.tribot.api2007.Banking.depositAllExcept(1275);
-        }
+
     }
 }
 
