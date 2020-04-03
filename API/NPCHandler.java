@@ -18,8 +18,8 @@ public class NPCHandler {
         return npcs.length > 0;
     }
 
-    private static boolean npcValid (RSNPC npc) {
-        return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), false);
+    private static boolean npcValid (RSNPC npc, boolean closeInteract) {
+        return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), !closeInteract);
     }
 
     private static boolean rightClickNPC (RSNPC npc, String optionToSelect) {
@@ -42,7 +42,7 @@ public class NPCHandler {
             RSNPC npc = npcs[0];
             boolean walkToAndInView = true;
 
-            if (!npcValid(npc) && closeInteract) {
+            if (!npcValid(npc, closeInteract) && closeInteract) {
                 General.println(("NPC IS NOT VALID!"));
                 if (DaxWalker.walkTo(npc.getAnimablePosition())) {
                     General.println("Using Dax Walker to walk to NPC");
@@ -53,12 +53,12 @@ public class NPCHandler {
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getAnimablePosition()) < 5, General.random(5000, 10000));
                     npc.adjustCameraTo();
                 }
-                walkToAndInView = npcValid(npc);
+                walkToAndInView = npcValid(npc, closeInteract);
             } else {
-                walkToAndInView = npc.adjustCameraTo() && npcValid(npc);
+                walkToAndInView = npc.adjustCameraTo() && npcValid(npc, closeInteract);
             }
 
-            if (walkToAndInView && npcValid(npc)) {
+            if (walkToAndInView && npcValid(npc, closeInteract)) {
                 boolean successfullyClicked = (optionToSelect == "") ? npc.click() : rightClickNPC(npc, optionToSelect);
                 return successfullyClicked;
             }

@@ -11,11 +11,17 @@ public class InterfaceHandler {
                 runescapeInterface.getText().contains(text);
     }
 
+    public static boolean interfaceContainsTextInComponentName(RSInterface runescapeInterface, CharSequence text) {
+        return Interfaces.isInterfaceSubstantiated(runescapeInterface) &&
+                runescapeInterface.getComponentName().contains(text);
+    }
+
     public static boolean clickHereToContinue () {
         RSInterface clickHereToContinueInterfaces[] = {
                 Interfaces.get(193,0,2),
                 Interfaces.get(229,2),
-                Interfaces.get(162,45)
+                Interfaces.get(162,45),
+                Interfaces.get(233,3)
         };
         for (RSInterface clickHereToContinueInterface: clickHereToContinueInterfaces) {
             if (interfaceContainsText(clickHereToContinueInterface, "Click here to continue") ||
