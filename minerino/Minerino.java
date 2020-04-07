@@ -61,7 +61,7 @@ public class Minerino extends Script {
 
     @Override
     public void run() {
-        onStart();
+//        onStart();
         while (true) {
             loop();
         }

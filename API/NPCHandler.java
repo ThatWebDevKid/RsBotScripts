@@ -10,8 +10,6 @@ import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.dax_api.api_lib.DaxWalker;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
 public class NPCHandler {
     private static boolean npcFound (RSNPC[] npcs) {
@@ -20,6 +18,20 @@ public class NPCHandler {
 
     private static boolean npcValid (RSNPC npc, boolean closeInteract) {
         return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), !closeInteract);
+    }
+
+    public static boolean npcFoundAndValid (RSNPC[] npcs, boolean closeInteract) {
+        if (npcFound(npcs)) {
+            RSNPC npc = npcs[0];
+            if (npcValid(npc, closeInteract)) {
+                return true;
+            } else {
+                if (npc.adjustCameraTo()) {
+                    return npcValid(npc, closeInteract);
+                }
+            }
+        }
+        return false;
     }
 
     private static boolean rightClickNPC (RSNPC npc, String optionToSelect) {
@@ -40,7 +52,7 @@ public class NPCHandler {
     public static boolean interactWithNPC (RSNPC[] npcs, String optionToSelect, boolean closeInteract) {
         if (npcFound(npcs) && Player.getRSPlayer().getInteractingCharacter() == null) {
             RSNPC npc = npcs[0];
-            boolean walkToAndInView = true;
+            boolean walkToAndInView;
 
             if (!npcValid(npc, closeInteract) && closeInteract) {
                 General.println(("NPC IS NOT VALID!"));

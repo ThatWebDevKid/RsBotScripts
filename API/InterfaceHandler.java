@@ -21,7 +21,8 @@ public class InterfaceHandler {
                 Interfaces.get(193,0,2),
                 Interfaces.get(229,2),
                 Interfaces.get(162,45),
-                Interfaces.get(233,3)
+                Interfaces.get(233,3),
+                Interfaces.get(193,2)
         };
         for (RSInterface clickHereToContinueInterface: clickHereToContinueInterfaces) {
             if (interfaceContainsText(clickHereToContinueInterface, "Click here to continue") ||
