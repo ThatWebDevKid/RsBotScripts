@@ -60,20 +60,22 @@ public class SpinFlax extends Node {
                         RSObject[] staircase = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Staircase");
                         Antiban.setHoverAndMenuOpenBooleans();
                         Antiban.generateSupportingTrackerInfo((int) averageWaitTime);
-                        boolean isSpinning = true;
 
-                        while (isSpinning) {
-                            General.sleep(500, 2000);
+                        Timing.waitCondition(() -> {
+                            General.sleep(500, 1000);
                             Antiban.checkTimedActions();
                             Antiban.executeHoverOrMenuOpenObject(staircase);
-                            boolean noMoreFlax = Inventory.find("Flax").length == 0;
+                            boolean noMoreWool = Inventory.find("Flax").length == 0;
+                            boolean isSpinning = true;
                             if (InterfaceHandler.clickHereToContinue()) {
                                 while (InterfaceHandler.clickHereToContinue());
                                 isSpinning = false;
-                            } else if (noMoreFlax) {
+                            } else if (noMoreWool) {
                                 isSpinning = false;
                             }
-                        }
+
+                            return !isSpinning;
+                        }, 30000);
 
                         updateStats(startedTime);
                         Antiban.generateAndSleep((int) waitTime);

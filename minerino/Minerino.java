@@ -66,7 +66,10 @@ public class Minerino extends Script {
                 return new DaxCredentials("sub_DPjXXzL5DeSiPf", "PUBLIC-KEY");
             }
         });
-        DaxWalker.walkToBank(RunescapeBank.LUMBRIDGE_TOP);
+        if (Login.getLoginState() == Login.STATE.LOGINSCREEN) {
+            Login.login();
+        }
+        DaxWalker.walkToBank(RunescapeBank.GRAND_EXCHANGE);
 //        onStart();
 //        while (true) {
 //            loop();

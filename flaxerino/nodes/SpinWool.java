@@ -56,20 +56,22 @@ public class SpinWool extends Node {
                         Antiban.setHoverAndMenuOpenBooleans();
                         Antiban.generateSupportingTrackerInfo((int) averageWaitTime);
 
-                        boolean isSpinning = true;
-                        while (isSpinning) {
-                            General.sleep(500, 2000);
+                        Timing.waitCondition(() -> {
+                            General.sleep(500, 1000);
                             Antiban.checkTimedActions();
                             Antiban.executeHoverOrMenuOpenObject(staircase);
-
                             boolean noMoreWool = Inventory.find("Wool").length == 0;
+                            boolean isSpinning = true;
                             if (InterfaceHandler.clickHereToContinue()) {
                                 while (InterfaceHandler.clickHereToContinue());
                                 isSpinning = false;
                             } else if (noMoreWool) {
                                 isSpinning = false;
                             }
-                        }
+
+                            return !isSpinning;
+                        }, 30000);
+
                         updateStats(startedTime);
                         Antiban.generateAndSleep((int) waitTime);
                     }
