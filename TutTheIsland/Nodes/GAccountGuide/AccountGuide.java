@@ -43,9 +43,9 @@ public class AccountGuide extends Node {
             return;
         }
 
-        if (InterfaceHandler.interfaceContainsText(chatInterface, "Just click on him to hear what he's got to say.")) {
+        if (InterfaceHandler.interfaceContainsText(chatInterface, "Just click on him to hear what he's got to say.") || InterfaceHandler.clickHereToContinue()) {
             NPCHandler.talkToNPC(accountGuide);
-             return;
+            return;
         }
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "on the flashing icon to open your Account Management")) {
@@ -53,11 +53,11 @@ public class AccountGuide extends Node {
             return;
         }
 
-        if (InterfaceHandler.interfaceContainsText(chatInterface, "Talk to the Account Guide to learn more.")) {
+        if (InterfaceHandler.interfaceContainsText(chatInterface, "Talk to the Account Guide to learn more.") || InterfaceHandler.clickHereToContinue()) {
             NPCHandler.talkToNPC(accountGuide);
             return;
         }
 
-        NPCHandler.talkToNPC(banker);
+        NPCHandler.interactWithNPC(banker, "Talk-to", false);
     }
 }

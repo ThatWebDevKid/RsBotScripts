@@ -2,6 +2,7 @@ package scripts.API;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterface;
 
 public class InterfaceHandler {
@@ -22,7 +23,10 @@ public class InterfaceHandler {
                 Interfaces.get(229,2),
                 Interfaces.get(162,45),
                 Interfaces.get(233,3),
-                Interfaces.get(193,2)
+                Interfaces.get(193,2),
+                Interfaces.get(217,3),
+                Interfaces.get(231,3),
+                Interfaces.get(11, 4)
         };
         for (RSInterface clickHereToContinueInterface: clickHereToContinueInterfaces) {
             if (interfaceContainsText(clickHereToContinueInterface, "Click here to continue") ||

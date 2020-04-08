@@ -31,7 +31,7 @@ public class SurvivalExpert extends Node {
 
         if (InterfaceHandler.interfaceContainsText(chatInterface, "To start fishing, just click on the sparkling fishing spot,")) {
             RSNPC[] fishingSpots = NPCs.findNearest(Constants.FISHING_SPOT);
-            NPCHandler.interactWithNPC(fishingSpots, "", true);
+            NPCHandler.interactWithNPC(fishingSpots, "", false);
             return;
         }
 

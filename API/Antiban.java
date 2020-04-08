@@ -74,15 +74,19 @@ public class Antiban {
      *
      * Will be called while performing an action. (example: while cutting a tree)
      *
-     * @param target to hover/open menu
+     * @param targets to hover/open menu
      */
-    public static void executeHoverOrMenuOpenObject(RSObject target) {
-        if (Mouse.isInBounds() && shouldHover) {
-            Clicking.hover(target);
-            if (shouldOpenMenu)
-                if (!ChooseOption.isOpen())
-                    DynamicClicking.clickRSObject(target, 3);
+    public static void executeHoverOrMenuOpenObject(RSObject[] targets) {
+        if (ObjectHandler.objectExistsAndValidWithoutCanReach(targets)) {
+            RSObject target = targets[0];
+            if (Mouse.isInBounds() && shouldHover) {
+                Clicking.hover(target);
+                if (shouldOpenMenu)
+                    if (!ChooseOption.isOpen())
+                        DynamicClicking.clickRSObject(target, 3);
+            }
         }
+
     }
 
     public static void executeHoverOrMenuOpenNPC(RSNPC[] targets, boolean closeInteract) {

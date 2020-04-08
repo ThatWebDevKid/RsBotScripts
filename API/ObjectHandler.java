@@ -21,12 +21,23 @@ public class ObjectHandler {
                 PathFinding.canReach(object.getAnimablePosition(), true);
     }
 
+    public static boolean objectExistsAndValidWithoutCanReach (RSObject[] objects) {
+        if (objectExists(objects)) {
+            RSObject object = objects[0];
+            return object.isOnScreen() &&
+                    object.isClickable();
+        }
+       return false;
+    }
+
     private static boolean rightClickObject (RSObject object, String optionToSelect) {
         if (object.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
             String optionToSelectFullString = optionToSelect + " " + object.getDefinition().getName();
             if (ChooseOption.isOptionValid(optionToSelectFullString)) {
                 return ChooseOption.select(optionToSelectFullString);
+            } else {
+                ChooseOption.select("Cancel");
             }
         }
         return false;
@@ -68,6 +79,37 @@ public class ObjectHandler {
 
     public static boolean interactWithObject(RSObject[] objects) {
         return interactWithObject(objects, "" );
+    }
+
+    public static boolean interactWithObjectWithoutAnimation(RSObject[] objects, String optionToSelect) {
+        if (objectExists(objects)) {
+            RSObject object = objects[0];
+            boolean walkToAndInView = true;
+
+            if (!objectValid(object)) {
+                if (DaxWalker.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Dax walker to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                } else if (WebWalking.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Web walker to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                }
+                walkToAndInView = objectValid(object);
+            }
+
+            if (walkToAndInView && objectValid(object)) {
+                boolean successfullyClicked = (optionToSelect == "") ? object.click() : rightClickObject(object, optionToSelect);
+                General.println("Object Sucessfully clicked? : " + successfullyClicked);
+                return successfullyClicked;
+            }
+        }
+        return false;
+    }
+
+    public static boolean interactWithObjectWithoutAnimation(RSObject[] objects) {
+        return interactWithObjectWithoutAnimation(objects, "" );
     }
 
 }

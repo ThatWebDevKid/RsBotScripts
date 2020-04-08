@@ -17,7 +17,8 @@ public class NPCHandler {
     }
 
     private static boolean npcValid (RSNPC npc, boolean closeInteract) {
-        return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), !closeInteract);
+        return npc.isOnScreen() && npc.isClickable() && PathFinding.canReach(npc.getAnimablePosition(), !closeInteract) ||
+                (npc.isOnScreen() && npc.isClickable());
     }
 
     public static boolean npcFoundAndValid (RSNPC[] npcs, boolean closeInteract) {
