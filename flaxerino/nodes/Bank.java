@@ -18,7 +18,7 @@ public class Bank extends Node {
     public boolean validate() {
         boolean inventoryOnlyHasBallOfWool = (Inventory.getAll().length - Inventory.find("Ball of wool").length) == 0;
         boolean inventoryOnlyHasBowString = (Inventory.getAll().length - Inventory.find("Bow string").length) == 0;
-        return inventoryOnlyHasBallOfWool || inventoryOnlyHasBowString || Inventory.getAll().length == 0;
+        return inventoryOnlyHasBallOfWool || inventoryOnlyHasBowString || Inventory.getAll().length == 0 || Skills.getActualLevel(Skills.SKILLS.CRAFTING) == 10;
     }
     public void execute() {
         if (DaxWalker.walkToBank(RunescapeBank.LUMBRIDGE_TOP)) {
