@@ -2,6 +2,7 @@ package scripts.API;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterface;
 
 public class InterfaceHandler {
@@ -11,11 +12,21 @@ public class InterfaceHandler {
                 runescapeInterface.getText().contains(text);
     }
 
+    public static boolean interfaceContainsTextInComponentName(RSInterface runescapeInterface, CharSequence text) {
+        return Interfaces.isInterfaceSubstantiated(runescapeInterface) &&
+                runescapeInterface.getComponentName().contains(text);
+    }
+
     public static boolean clickHereToContinue () {
         RSInterface clickHereToContinueInterfaces[] = {
                 Interfaces.get(193,0,2),
                 Interfaces.get(229,2),
-                Interfaces.get(162,45)
+                Interfaces.get(162,45),
+                Interfaces.get(233,3),
+                Interfaces.get(193,2),
+                Interfaces.get(217,3),
+                Interfaces.get(231,3),
+                Interfaces.get(11, 4)
         };
         for (RSInterface clickHereToContinueInterface: clickHereToContinueInterfaces) {
             if (interfaceContainsText(clickHereToContinueInterface, "Click here to continue") ||
@@ -24,14 +35,11 @@ public class InterfaceHandler {
             }
         }
         return false;
-
     }
 
     public static boolean clickInterface(RSInterface runescapeInterface) {
         if (Interfaces.isInterfaceSubstantiated(runescapeInterface)) {
-            runescapeInterface.click();
-            General.sleep(General.random(500, 1000), General.random(2000,3000));
-            return true;
+            return runescapeInterface.click();
         }
         return false;
     }
