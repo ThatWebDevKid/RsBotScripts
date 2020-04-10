@@ -1,24 +1,16 @@
 package scripts.flaxerino;
 
 import org.tribot.api.General;
-import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Login;
-import org.tribot.api2007.types.RSArea;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import scripts.API.Node;
 import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.api_lib.models.DaxCredentials;
 import scripts.dax_api.api_lib.models.DaxCredentialsProvider;
-import scripts.dax_api.api_lib.models.RunescapeBank;
 import scripts.flaxerino.nodes.Bank;
 import scripts.flaxerino.nodes.SpinFlax;
 import scripts.flaxerino.nodes.SpinWool;
-import scripts.minerino.constants.Constants;
-import scripts.minerino.nodes.Banking;
-import scripts.minerino.nodes.Dropping;
-import scripts.minerino.nodes.Mine;
-import scripts.minerino.nodes.Traversal;
 
 import java.util.ArrayList;
 import java.util.Collections;
