@@ -1,12 +1,10 @@
 package scripts.API;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSNPC;
-import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.dax_api.api_lib.DaxWalker;
 
