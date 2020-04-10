@@ -33,7 +33,7 @@ import java.util.Collections;
         description = "Tutorial Island Bot by ThatWebDevKid! If you like it, please leave a comment and let me know! Any problems or bugs you run into," +
                 " please leave a comment and tell me the problem. Always looking to improve my scripts :D This script is fully open sourced. You can " +
                 "view the source code at https://github.com/ThatWebDevKid/RsBotScripts",
-        version = (1.0)
+        version = (1.1)
 )
 
 public class TutTheIsland extends Script {
