@@ -37,7 +37,7 @@ public class ObjectHandler {
             if (ChooseOption.isOptionValid(optionToSelectFullString)) {
                 return ChooseOption.select(optionToSelectFullString);
             } else {
-                return ChooseOption.select("Cancel");
+                ChooseOption.select("Cancel");
             }
         }
         return false;
