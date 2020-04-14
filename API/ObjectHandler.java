@@ -53,8 +53,8 @@ public class ObjectHandler {
                     General.println("Using Dax walker to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
-                } else if (WebWalking.walkTo(object.getAnimablePosition())) {
-                    General.println("Using Web walker to walk to object");
+                } else if (Walking.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Walking class to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
                 }
@@ -93,8 +93,8 @@ public class ObjectHandler {
                     General.println("Using Dax walker to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
-                } else if (WebWalking.walkTo(object.getPosition())) {
-                    General.println("Using Web walker to walk to object");
+                } else if (Walking.walkTo(object.getPosition())) {
+                    General.println("Using Walking class to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
                 }
@@ -120,8 +120,8 @@ public class ObjectHandler {
                     General.println("Using Dax walker to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
-                } else if (WebWalking.walkTo(object.getPosition())) {
-                    General.println("Using Web walker to walk to object");
+                } else if (Walking.walkTo(object.getPosition())) {
+                    General.println("Using Walking class to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
                 }

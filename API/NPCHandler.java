@@ -59,8 +59,8 @@ public class NPCHandler {
                     General.println("Using Dax Walker to walk to NPC");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getAnimablePosition()) < 5, General.random(5000, 10000));
                     npc.adjustCameraTo();
-                } else if (WebWalking.walkTo(npc.getAnimablePosition())) {
-                    General.println("Using Web walker to walk to NPC");
+                } else if (Walking.walkTo(npc.getAnimablePosition())) {
+                    General.println("Using Walking class to walk to NPC");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(npc.getAnimablePosition()) < 5, General.random(5000, 10000));
                     npc.adjustCameraTo();
                 }
