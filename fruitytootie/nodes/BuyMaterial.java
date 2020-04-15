@@ -21,6 +21,7 @@ public class BuyMaterial  extends Node {
     }
 
     public boolean validate() {
+        hasEnoughMaterial = false;
         if (!Constants.funchsFineGroceries.contains(Player.getPosition())) {
             DaxWalker.walkTo(Constants.funchsFineGroceries.getRandomTile());
         }
@@ -75,7 +76,7 @@ public class BuyMaterial  extends Node {
         }, General.random(3000, 5000));
 
 
-        return hasEnoughMaterial && haveEnoughCoins;
+        return successcfullyTradeheckelFunch && hasEnoughMaterial && haveEnoughCoins;
     }
 
     public void execute() {
