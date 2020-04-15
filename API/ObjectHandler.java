@@ -53,8 +53,8 @@ public class ObjectHandler {
                     General.println("Using Dax walker to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
-                } else if (WebWalking.walkTo(object.getAnimablePosition())) {
-                    General.println("Using Web walker to walk to object");
+                } else if (Walking.walkTo(object.getAnimablePosition())) {
+                    General.println("Using Walking class to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
                 }
@@ -83,16 +83,45 @@ public class ObjectHandler {
 
     public static boolean interactWithObjectWithoutAnimation(RSObject[] objects, String optionToSelect) {
         if (objectExists(objects)) {
+            General.println("OBJECT EXISTS!");
             RSObject object = objects[0];
             boolean walkToAndInView = true;
 
             if (!objectValid(object)) {
-                if (DaxWalker.walkTo(object.getAnimablePosition())) {
+                General.println("Object not valid!");
+                if (DaxWalker.walkTo(object.getPosition())) {
                     General.println("Using Dax walker to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
-                } else if (WebWalking.walkTo(object.getAnimablePosition())) {
-                    General.println("Using Web walker to walk to object");
+                } else if (Walking.walkTo(object.getPosition())) {
+                    General.println("Using Walking class to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                }
+                walkToAndInView = objectValid(object);
+            }
+
+            if (walkToAndInView && objectValid(object)) {
+                boolean successfullyClicked = (optionToSelect == "") ? object.click() : rightClickObject(object, optionToSelect);
+                General.println("Object Sucessfully clicked? : " + successfullyClicked);
+                return successfullyClicked;
+            }
+        }
+        return false;
+    }
+
+    public static boolean interactWithObjectWithoutAnimation(RSObject[] objects, String optionToSelect, int index) {
+        if (objectExists(objects)) {
+            RSObject object = objects[index];
+            boolean walkToAndInView = true;
+
+            if (!objectValid(object)) {
+                if (DaxWalker.walkTo(object.getPosition())) {
+                    General.println("Using Dax walker to walk to object");
+                    Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
+                    object.adjustCameraTo();
+                } else if (Walking.walkTo(object.getPosition())) {
+                    General.println("Using Walking class to walk to object");
                     Timing.waitCondition(() -> Player.getPosition().distanceTo(object.getAnimablePosition()) < 5, General.random(5000, 10000));
                     object.adjustCameraTo();
                 }

@@ -1,9 +1,12 @@
 package scripts.API;
 
 import org.tribot.api.General;
+import org.tribot.api.input.Mouse;
+import org.tribot.api2007.ChooseOption;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterface;
+import org.tribot.api2007.types.RSNPC;
 
 public class InterfaceHandler {
 
@@ -40,6 +43,20 @@ public class InterfaceHandler {
     public static boolean clickInterface(RSInterface runescapeInterface) {
         if (Interfaces.isInterfaceSubstantiated(runescapeInterface)) {
             return runescapeInterface.click();
+        }
+        return false;
+    }
+
+    public static boolean rightClickInterface (RSInterface runescapeInterface, String optionToSelect) {
+        if (runescapeInterface.hover()) {
+            Mouse.click(GlobalConstants.RIGHT_CLICK);
+            String optionToSelectFullString = optionToSelect;
+            General.println(optionToSelectFullString);
+            if (ChooseOption.isOptionValid(optionToSelectFullString)) {
+                return ChooseOption.select(optionToSelectFullString);
+            } else {
+                ChooseOption.select("Cancel");
+            }
         }
         return false;
     }
