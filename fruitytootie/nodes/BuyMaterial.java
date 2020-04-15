@@ -34,19 +34,30 @@ public class BuyMaterial  extends Node {
 
         boolean successcfullyTradeheckelFunch = NPCHandler.interactWithNPC(heckelFunch, "Trade");
         if (successcfullyTradeheckelFunch) {
-            while(!Interfaces.isInterfaceSubstantiated(300));
             RSInterface pineapple = Interfaces.get(300, 16,5);
             RSInterface oranges = Interfaces.get(300, 16, 7);
             RSInterface lemons = Interfaces.get(300, 16, 8);
             RSInterface shotGlass = Interfaces.get(300, 16, 17);
+            while(!Interfaces.isInterfaceSubstantiated(pineapple)) {
+                pineapple = Interfaces.get(300, 16,5);
+            }
+            while(!Interfaces.isInterfaceSubstantiated(oranges)) {
+                oranges = Interfaces.get(300, 16, 7);
+            }
+            while(!Interfaces.isInterfaceSubstantiated(lemons)) {
+                lemons = Interfaces.get(300, 16, 8);
+            }
+            while(!Interfaces.isInterfaceSubstantiated(shotGlass)) {
+                shotGlass = Interfaces.get(300, 16, 17);
+            }
             boolean enoughPineapple = pineapple != null && pineapple.getComponentStack() >= 5;
             boolean enoughOranges = oranges != null && oranges.getComponentStack() >= 5;
             boolean enoughLemons = lemons != null && lemons.getComponentStack() >= 10;
             boolean enoughShotGlasses = shotGlass != null && shotGlass.getComponentStack() >= 5;
-            General.println("Enough Pineapples? " + enoughPineapple);
-            General.println("Enough Oranges? " + enoughOranges);
-            General.println("Enough Lemons? " + enoughLemons);
-            General.println("Enough Shot Glasses? " + enoughShotGlasses);
+            General.println("Enough Pineapples? " +  pineapple.getComponentStack());
+            General.println("Enough Oranges? " + oranges.getComponentStack());
+            General.println("Enough Lemons? " + lemons.getComponentStack());
+            General.println("Enough Shot Glasses? " + shotGlass.getComponentStack());
             hasEnoughMaterial =  enoughPineapple && enoughOranges && enoughLemons && enoughShotGlasses;
         }
 

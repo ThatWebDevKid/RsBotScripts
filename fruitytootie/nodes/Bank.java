@@ -14,7 +14,7 @@ public class Bank extends Node {
     }
 
     public boolean validate() {
-        return Inventory.find("Fruit blast").length >= 10;
+        return Inventory.find("Fruit blast").length >= 20;
     }
 
     public void execute() {

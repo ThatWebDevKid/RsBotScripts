@@ -40,6 +40,8 @@ public class ItemHandler {
             String optionToSelectFullString = optionToSelect + " " + item.getDefinition().getName();
             if (ChooseOption.isOptionValid(optionToSelectFullString)) {
                 return ChooseOption.select(optionToSelectFullString);
+            } else if (ChooseOption.isOptionValid("Cancel")) {
+                ChooseOption.select("Cancel");
             }
         }
         return false;
