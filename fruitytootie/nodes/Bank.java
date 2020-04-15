@@ -27,12 +27,5 @@ public class Bank extends Node {
                 Banking.deposit(0, "Fruit blast");
             }
         }
-
-
-
-
-
-
-
     }
 }
