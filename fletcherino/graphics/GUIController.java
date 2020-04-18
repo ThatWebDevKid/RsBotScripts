@@ -110,6 +110,8 @@ public class GUIController implements Initializable {
     @FXML
     private ListView tasksList;
 
+    private String nameProfileChosen = "";
+
 //    @FXML
 //    private Button removeTask;
 //
@@ -128,6 +130,33 @@ public class GUIController implements Initializable {
 
     @FXML
     private void startScriptPressed() {
+        boolean profileSelected = nameProfileChosen == "" ? false : true;
+
+        // Create a textfile which saves the last selected profile user chose
+        if (profileSelected) {
+            try {
+                File myObj = new File(Util.getWorkingDirectory().getAbsolutePath(),  "LastSelectedProfile.txt");
+                if (myObj.createNewFile()) {
+                    System.out.println("File created: " + myObj.getName());
+                } else {
+                    System.out.println("File already exists.");
+                }
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+            try {
+                FileWriter myWriter = new FileWriter(Util.getWorkingDirectory().getAbsolutePath() + "\\" + "LastSelectedProfile.txt");
+                myWriter.write((String) selectProfile.getValue());
+                myWriter.close();
+                General.println("Successfully saved selected profile into LastSelectedProfile.txt");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+
         for (int i = 0; i < tasksList.getItems().size(); i++) {
             Task task = new Task(tasksList.getItems().get(i).toString());
             tasks.add(task);
@@ -157,6 +186,7 @@ public class GUIController implements Initializable {
         for (int i = 0; i < tasksList.getItems().size(); i++) {
             content += tasksList.getItems().get(i).toString() + "/";
         }
+
         try {
             File myObj = new File(Util.getWorkingDirectory().getAbsolutePath(), nameProfile.getText() + ".txt");
             if (myObj.createNewFile()) {
@@ -168,6 +198,7 @@ public class GUIController implements Initializable {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
         try {
             FileWriter myWriter = new FileWriter(Util.getWorkingDirectory().getAbsolutePath() + "\\" + nameProfile.getText() + ".txt");
             myWriter.write(content);
@@ -177,14 +208,32 @@ public class GUIController implements Initializable {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+
     }
 
     @FXML
     private void loadTasksPressed(){
         tasksList.getItems().clear();
-        String nameProfileChosen = (String) selectProfile.getValue();
+        nameProfileChosen = (String) selectProfile.getValue();
         try {
             String data = new String(Files.readAllBytes(Paths.get(Util.getWorkingDirectory().getAbsolutePath() + "\\" + nameProfileChosen + ".txt")));
+            String dataSplit[] = data.split("/");
+
+            for (String task: dataSplit) {
+                tasksList.getItems().add(task);
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    private void lastTaskProfileChosen(){
+        tasksList.getItems().clear();
+
+        try {
+            String lastSelectedProfileName = new String(Files.readAllBytes(Paths.get(Util.getWorkingDirectory().getAbsolutePath() + "\\" + "LastSelectedProfile.txt")));
+            String data = new String(Files.readAllBytes(Paths.get(Util.getWorkingDirectory().getAbsolutePath() + "\\" + lastSelectedProfileName + ".txt")));
             String dataSplit[] = data.split("/");
 
             for (String task: dataSplit) {
@@ -272,6 +321,8 @@ public class GUIController implements Initializable {
                 selectProfile.getItems().add(file.getName().substring(0, file.getName().lastIndexOf('.')));
             }
         }
+
+        lastTaskProfileChosen();
     }
 
 

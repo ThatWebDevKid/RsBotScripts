@@ -10,12 +10,10 @@ import org.tribot.api2007.types.RSPlayer;
 import scripts.API.Antiban;
 import scripts.API.InterfaceHandler;
 import scripts.API.ItemHandler;
-import scripts.API.NPCHandler;
-import scripts.TutTheIsland.TutTheIsland;
-import scripts.TutTheIsland.Utils.Constants;
+import scripts.fletcherino.Fletcherino;
 import scripts.fletcherino.Node;
 import scripts.fletcherino.Task;
-import scripts.minerino.Minerino;
+import scripts.wastedbro.api.rsitem_services.GrandExchange;
 
 import java.util.Arrays;
 
@@ -24,6 +22,12 @@ public class CutWood extends Node {
         General.println("Cutting wood!");
     }
     public boolean validate(Task task) {
+        if (GrandExchange.getWindowState() != null) {
+            while (!GrandExchange.close()) {
+                General.sleep(100, 300);
+            }
+        }
+
         return task.getWhatToDo().equalsIgnoreCase("Cut") && (!task.ranOutOfWoodForCutting() || !task.reachedDesiredLevel() || task.getSuppliesToFletch() > 0);
     }
 
@@ -45,10 +49,12 @@ public class CutWood extends Node {
     public void execute(Task task) {
         if (!Banking.isBankScreenOpen()) {
             if (Banking.openBank()) {
-                Timing.waitCondition(() -> {
+                if(!Timing.waitCondition(() -> {
                     General.sleep(500, 1000);
                     return Banking.isBankScreenOpen();
-                }, General.random(5000, 8000));
+                }, General.random(5000, 8000))) {
+                    return;
+                }
             }
         }
 
@@ -71,8 +77,9 @@ public class CutWood extends Node {
             }
         }
 
-        int amountToWithdraw = task.getSuppliesToFletch() == -1 ? 0 : task.getSuppliesToFletch();
-        if (Banking.withdraw(Math.min(27, amountToWithdraw), task.getLogType())) {
+        int amountToWithdraw = task.getSuppliesToFletch() == -1 ? 27 : task.getSuppliesToFletch();
+        amountToWithdraw = Math.min(27, amountToWithdraw);
+        if (Banking.withdraw(amountToWithdraw, task.getLogType())) {
             Timing.waitCondition(() -> {
                 General.sleep(500, 1000);
                 return Inventory.find(task.getLogType()).length > 0;
@@ -94,6 +101,12 @@ public class CutWood extends Node {
         task.setSluppliesToFletch(task.getSuppliesToFletch() - logs.length);
 
         while (logs.length > 0) {
+            if (GrandExchange.getWindowState() != null) {
+                while (!GrandExchange.close()) {
+                    General.sleep(100, 300);
+                }
+            }
+
             if (ItemHandler.clickOnInventoryItem(knife)) {
                 if (ItemHandler.clickOnInventoryItem(logs)) {
                     Timing.waitCondition(() -> {
@@ -129,29 +142,29 @@ public class CutWood extends Node {
                             Antiban.setHoverBooleans();
                             Antiban.generateSupportingTrackerInfo((int) averageCuttingWaitTime);
 
-                            Timing.waitCondition(() -> {
+                            if (Timing.waitCondition(() -> {
                                 General.sleep(500);
                                 RSPlayer player = Player.getRSPlayer();
                                 return player != null && player.getAnimation() != -1;
-                            }, General.random(20000, 25000));
+                            }, General.random(20000, 25000))) {
+                                Timing.waitCondition(() -> {
+                                    General.sleep(500);
 
+                                    Antiban.checkTimedActions();
+                                    Antiban.executeHoverOpenNPC(bankers, false);
 
-                            Timing.waitCondition(() -> {
-                                General.sleep(500);
+                                    boolean clickedNext = false;
+                                    while (InterfaceHandler.clickHereToContinue()) {
+                                        clickedNext = true;
+                                    }
+                                    boolean noMoreLogs = Inventory.find(task.getLogType()).length <= 0;
+                                    return clickedNext || noMoreLogs;
+                                }, 60000);
 
-                                Antiban.checkTimedActions();
-                                Antiban.executeHoverOpenNPC(bankers, false);
+                                updateCuttingWoodStastics(startedCutting);
+                                Antiban.generateAndSleep((int) lastCuttingWaitTime);
+                            }
 
-                                boolean clickedNext = false;
-                                while (InterfaceHandler.clickHereToContinue()) {
-                                    clickedNext = true;
-                                }
-                                boolean noMoreLogs = Inventory.find(task.getLogType()).length <= 0;
-                                return clickedNext || noMoreLogs;
-                            }, 240000);
-
-                            updateCuttingWoodStastics(startedCutting);
-                            Antiban.generateAndSleep((int) lastCuttingWaitTime);
                         }
                     }
                 }
@@ -159,5 +172,6 @@ public class CutWood extends Node {
                 logs = Inventory.find(task.getLogType());
             }
         }
+        Fletcherino.totalItemsFletched += amountToWithdraw;
     }
 }

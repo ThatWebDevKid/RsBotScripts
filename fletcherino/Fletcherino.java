@@ -4,41 +4,47 @@ import org.tribot.api.General;
 import org.tribot.api2007.*;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
-import org.tribot.util.Util;
-import scripts.fletcherino.Node;
-import scripts.dax_api.api_lib.DaxWalker;
-import scripts.dax_api.api_lib.models.DaxCredentials;
-import scripts.dax_api.api_lib.models.DaxCredentialsProvider;
-import scripts.dax_api.api_lib.models.RunescapeBank;
+import org.tribot.script.interfaces.Painting;
 import scripts.fletcherino.graphics.FXMLString;
 import scripts.fletcherino.graphics.GUI;
 import scripts.fletcherino.graphics.GUIController;
-import scripts.fletcherino.nodes.BuyMaterial;
 import scripts.fletcherino.nodes.CutWood;
 import scripts.fletcherino.nodes.StringBow;
+import scripts.fluffeepaint.FluffeesPaint;
+import scripts.fluffeepaint.PaintInfo;
 
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @ScriptManifest(
         authors = {"ThatWebDevKid"},
         category = "Fletching",
         name = "Fletcherino",
         gameMode = 1,
-        description = "Fletching Bot by ThatWebDevKid! If you like it, please leave a comment and let me know! Any problems or bugs you run into," +
-                " please leave a comment and tell me the problem. Always looking to improve my scripts :D This script is fully open sourced. You can " +
-                "view the source code at https://github.com/ThatWebDevKid/RsBotScripts",
+        description = "Contact QQ 86015866",
         version = (1.0)
 )
 
-public class Fletcherino extends Script {
+public class Fletcherino extends Script implements Painting {
+    public static double totalItemsFletched = 0;
     private ArrayList<Node> Nodes = new ArrayList<>();
     private GUI gui;
+    private boolean scriptStarted = false;
+    private FluffeesPaint FLUFFEES_PAINT = new FluffeesPaint(new PaintInfo() {
+        @Override
+        public String[] getPaintInfo() {
+            return new String[]{
+                    "Runtime: " + FLUFFEES_PAINT.getRuntimeString(),
+                    "Total items fletched: " + (int)totalItemsFletched,
+                    "Current fletching level: " + Skills.getActualLevel(Skills.SKILLS.FLETCHING),
+                    "Items fletched / Hour: " + (int)((totalItemsFletched / FLUFFEES_PAINT.getRuntimeSeconds()) * 3600),
+                    "Exp until next level: " + Skills.getXPToNextLevel(Skills.SKILLS.FLETCHING),
+            };
+        }
+    }, FluffeesPaint.PaintLocations.TOP_LEFT_PLAY_SCREEN, new Color[]{new Color(255, 251, 255)}, "Trebuchet MS", new Color[]{new Color(93, 156, 236, 0)},
+            new Color[]{new Color(39, 95, 255)}, 0, false, 5, 3, 0);
 
     private void onStart () {
 
@@ -55,15 +61,21 @@ public class Fletcherino extends Script {
     }
 
     @Override
+    public void onPaint(Graphics g) {
+        if (scriptStarted) {
+            FLUFFEES_PAINT.paint(g);
+        }
+    }
+
+    @Override
     public void run() {
         gui = new GUI(FXMLString.get);
         gui.show();
         while (gui.isOpen()) {
             General.sleep(500);
         }
-
-
         onStart();
+        scriptStarted = true;
         for (final Task task: GUIController.tasks) {
             while (!task.isCompleted()) {
                 for (final Node node: Nodes) {
@@ -79,13 +91,4 @@ public class Fletcherino extends Script {
         Login.logout();
     }
 
-//    private void loop() {
-//        for (final Node node: Nodes) {
-//            if (node.validate()) {
-//                node.printStatus();
-//                node.execute();
-//                General.sleep(General.random(2500, 3000));
-//            }
-//        }
-//    }
 }

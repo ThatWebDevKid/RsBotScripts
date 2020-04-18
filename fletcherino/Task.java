@@ -8,6 +8,7 @@ import org.tribot.api2007.Player;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.fletcherino.graphics.GUIController;
+import scripts.wastedbro.api.rsitem_services.GrandExchange;
 
 public class Task {
 
@@ -96,6 +97,12 @@ public class Task {
     }
 
     public boolean isCompleted() {
+        if (GrandExchange.getWindowState() != null) {
+            while (!GrandExchange.close()) {
+                General.sleep(100, 300);
+            }
+        }
+
         return reachedDesiredLevel() || ranOutOfWoodForCutting() || ranOutOfBowsAndBowStrings() || (suppliesToFletch == 0);
     }
 

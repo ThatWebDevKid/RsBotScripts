@@ -3,22 +3,29 @@ package scripts.fletcherino.nodes;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.*;
-import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.API.Antiban;
 import scripts.API.InterfaceHandler;
 import scripts.API.ItemHandler;
+import scripts.fletcherino.Fletcherino;
 import scripts.fletcherino.Node;
 import scripts.fletcherino.Task;
-import scripts.minerino.Minerino;
+import scripts.wastedbro.api.rsitem_services.GrandExchange;
 
 public class StringBow extends Node {
     public void printStatus(Task task) {
         General.println("Stringing your bows!!");
     }
     public boolean validate(Task task) {
+        if (GrandExchange.getWindowState() != null) {
+            while (!GrandExchange.close()) {
+                General.sleep(100, 300);
+            }
+        }
+
+
         return task.getWhatToDo().equalsIgnoreCase("String") && (!task.ranOutOfBowsAndBowStrings() || !task.reachedDesiredLevel() || task.getSuppliesToFletch() > 0);
     }
 
@@ -41,10 +48,12 @@ public class StringBow extends Node {
     public void execute(Task task) {
         if (!Banking.isBankScreenOpen()) {
             if (Banking.openBank()) {
-                Timing.waitCondition(() -> {
+                if(!Timing.waitCondition(() -> {
                     General.sleep(500, 1000);
                     return Banking.isBankScreenOpen();
-                }, General.random(5000, 8000));
+                }, General.random(5000, 8000))) {
+                    return;
+                }
             }
         }
 
@@ -58,7 +67,8 @@ public class StringBow extends Node {
         }
 
         int amountToWithdraw = task.getSuppliesToFletch() == -1 ? 14 : task.getSuppliesToFletch();
-        if (Banking.withdraw(Math.min(14, amountToWithdraw), "Bow string")) {
+        amountToWithdraw = Math.min(14, amountToWithdraw);
+        if (Banking.withdraw(amountToWithdraw, "Bow string")) {
             Timing.waitCondition(() -> {
                 General.sleep(500, 1000);
                 return Inventory.find("Bow string").length > 0;
@@ -66,7 +76,7 @@ public class StringBow extends Node {
         }
 
 
-        if (Banking.withdraw(Math.min(14, amountToWithdraw), task.getItemToDo())) {
+        if (Banking.withdraw(amountToWithdraw, task.getItemToDo())) {
             Timing.waitCondition(() -> {
                 General.sleep(500, 1000);
                 return Inventory.find(task.getItemToDo()).length > 0;
@@ -86,6 +96,13 @@ public class StringBow extends Node {
         RSNPC[] bankers = NPCs.findNearest("Banker");
         task.setSluppliesToFletch(task.getSuppliesToFletch() - Math.min(bows.length, bowStrings.length));
         while (bowStrings.length > 0 && bows.length > 0) {
+            if (GrandExchange.getWindowState() != null) {
+                while (!GrandExchange.close()) {
+                    General.sleep(100, 300);
+                }
+            }
+
+
             if (ItemHandler.clickOnInventoryItem(bowStrings)) {
                 General.sleep(500, 1000);
                 if (ItemHandler.clickOnInventoryItem(bows)) {
@@ -101,28 +118,30 @@ public class StringBow extends Node {
                         Antiban.generateSupportingTrackerInfo((int) averageStringingWaitTime);
 
                         General.sleep(500, 1000);
-                        Timing.waitCondition(() -> {
+
+                        if (Timing.waitCondition(() -> {
                             General.sleep(500, 1000);
                             Antiban.checkTimedActions();
                             RSPlayer player = Player.getRSPlayer();
                             return player != null && player.getAnimation() != -1;
-                        }, General.random(20000, 25000));
-                        Timing.waitCondition(() -> {
-                            General.sleep(500, 1000);
+                        }, General.random(20000, 25000))) {
+                            Timing.waitCondition(() -> {
+                                General.sleep(500, 1000);
 
-                            Antiban.checkTimedActions();
-                            Antiban.executeHoverOpenNPC(bankers, false);
+                                Antiban.checkTimedActions();
+                                Antiban.executeHoverOpenNPC(bankers, false);
 
-                            boolean clickedNext = false;
-                            while (InterfaceHandler.clickHereToContinue()) {
-                                clickedNext = true;
-                            }
-                            boolean noMoreToString = Inventory.find("Bow string").length <= 0 || Inventory.find(task.getItemToDo()).length <= 0;
-                            return clickedNext || noMoreToString;
-                        }, 120000);
+                                boolean clickedNext = false;
+                                while (InterfaceHandler.clickHereToContinue()) {
+                                    clickedNext = true;
+                                }
+                                boolean noMoreToString = Inventory.find("Bow string").length <= 0 || Inventory.find(task.getItemToDo()).length <= 0;
+                                return clickedNext || noMoreToString;
+                            }, 60000);
 
-                        updateStringingdStastics(startedStringing);
-                        Antiban.generateAndSleep((int) lastStringingWaitTime);
+                            updateStringingdStastics(startedStringing);
+                            Antiban.generateAndSleep((int) lastStringingWaitTime);
+                        }
                     }
                 }
             }
@@ -130,5 +149,6 @@ public class StringBow extends Node {
             bowStrings = Inventory.find("Bow string");
             bows = Inventory.find(task.getItemToDo());
         }
+        Fletcherino.totalItemsFletched += amountToWithdraw;
     }
 }
