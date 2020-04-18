@@ -23,7 +23,7 @@ import java.util.Collections;
         category = "Fletching",
         name = "Fletcherino",
         gameMode = 1,
-        description = "Contact QQ 86015866",
+        description = "Fletching bot script by ThatWebDevKid",
         version = (1.0)
 )
 

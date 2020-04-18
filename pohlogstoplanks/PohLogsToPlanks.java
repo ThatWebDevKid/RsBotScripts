@@ -1,6 +1,7 @@
 package scripts.pohlogstoplanks;
 
 import org.tribot.api.General;
+import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Login;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
@@ -30,6 +31,7 @@ import java.util.Collections;
 
 public class PohLogsToPlanks extends Script {
     public static ArrayList<Node> Nodes = new ArrayList<>();
+    public static boolean noMoreLogs = false;
 
     private void onStart () {
         DaxWalker.setCredentials(new DaxCredentialsProvider() {
@@ -54,9 +56,10 @@ public class PohLogsToPlanks extends Script {
     @Override
     public void run() {
         onStart();
-        while (true) {
+        while (Inventory.find("Coins")[0].getStack() >= 6250 && !noMoreLogs) {
             loop();
         }
+        Login.logout();
     }
 
     private void loop() {
@@ -64,7 +67,7 @@ public class PohLogsToPlanks extends Script {
             if (node.validate()) {
                 node.printStatus();
                 node.execute();
-                General.sleep(General.random(1000, 2000));
+                General.sleep(1000, 1500);
             }
         }
     }
