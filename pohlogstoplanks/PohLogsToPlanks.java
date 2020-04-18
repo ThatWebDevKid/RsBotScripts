@@ -56,7 +56,7 @@ public class PohLogsToPlanks extends Script {
     @Override
     public void run() {
         onStart();
-        while (Inventory.find("Coins")[0].getStack() >= 6250 && !noMoreLogs) {
+        while (Inventory.find("Coins")[0].getStack() >= 10000 && !noMoreLogs) {
             loop();
         }
         Login.logout();
