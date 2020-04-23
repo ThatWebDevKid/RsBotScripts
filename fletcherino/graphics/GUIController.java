@@ -28,6 +28,7 @@ import scripts.fletcherino.Task;
 
 @DoNotRename
 public class GUIController implements Initializable {
+    @DoNotRename
     String itemToDoOptions1AndOptions3[] = {
             "Shortbow",
             "Shafts",
@@ -58,6 +59,7 @@ public class GUIController implements Initializable {
             "Magic longbow",
             "Magic shield",
     };
+    @DoNotRename
     String itemToDoOptions2[] = {
             "Shortbow (u)",
             "Longbow (u)",
@@ -72,42 +74,45 @@ public class GUIController implements Initializable {
             "Magic shortbow (u)",
             "Magic longbow (u)",
     };
+    @DoNotRename
     public static Map<String,String> mymap = new HashMap<>();
+    @DoNotRename
     public static ArrayList<Task> tasks = new ArrayList<>();
-
+    @DoNotRename
     private GUI gui;
 
-    @FXML
+    @FXML @DoNotRename
     private ComboBox thingToDo;
 
-    @FXML
+    @FXML @DoNotRename
     private ComboBox itemToDo;
 
-    @FXML
+    @FXML @DoNotRename
     private ComboBox selectProfile;
 
-    @FXML
+    @FXML @DoNotRename
     private TextField upToLevel;
 
-    @FXML
+    @FXML @DoNotRename
     private TextField suppliesToFletch;
 
-    @FXML
+    @FXML @DoNotRename
     private TextField nameProfile;
 
-    @FXML
+    @FXML @DoNotRename
     private ListView tasksList;
 
+    @DoNotRename
     private String nameProfileChosen = "";
 
-    @FXML
+    @FXML @DoNotRename
     private void selectProfileOnChange() {
 
     }
 
 
 
-    @FXML
+    @FXML @DoNotRename
     private void startScriptPressed() {
         boolean profileSelected = nameProfileChosen == "" ? false : true;
 
@@ -144,7 +149,7 @@ public class GUIController implements Initializable {
         this.getGUI().close();
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void addTaskPressed(){
         String thingToDoFinalValue = (String) thingToDo.getValue();
         String itemToDoFinalValue = (String) itemToDo.getValue();
@@ -154,12 +159,12 @@ public class GUIController implements Initializable {
         tasksList.getItems().add(itemToAddToList);
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void removeTaskPressed(){
         tasksList.getItems().remove(tasksList.getSelectionModel().getSelectedIndex());
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void saveTasksPressed(){
         String content = "";
         for (int i = 0; i < tasksList.getItems().size(); i++) {
@@ -190,7 +195,7 @@ public class GUIController implements Initializable {
 
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void loadTasksPressed(){
         tasksList.getItems().clear();
         nameProfileChosen = (String) selectProfile.getValue();
@@ -207,6 +212,7 @@ public class GUIController implements Initializable {
         }
     }
 
+    @DoNotRename
     private void lastTaskProfileChosen(){
         tasksList.getItems().clear();
 
@@ -224,7 +230,7 @@ public class GUIController implements Initializable {
         }
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void thingToDoOnChange() {
         String newValue = (String) thingToDo.getValue();
 
@@ -235,6 +241,7 @@ public class GUIController implements Initializable {
         }
     }
 
+    @DoNotRename
     private void itemToDoOption1AndOption3() {
         itemToDo.getItems().clear();
         for (String item: itemToDoOptions1AndOptions3) {
@@ -244,6 +251,8 @@ public class GUIController implements Initializable {
         itemToDo.getSelectionModel().selectFirst();
 
     }
+
+    @DoNotRename
     private void itemToDoOption2() {
         itemToDo.getItems().clear();
         for (String item: itemToDoOptions2) {
@@ -253,18 +262,20 @@ public class GUIController implements Initializable {
 
     }
 
-    @FXML
+    @FXML @DoNotRename
     private void itemToDoOnChange() {}
 
+    @DoNotRename
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
+    @DoNotRename
     public GUI getGUI() {
         return this.gui;
     }
 
-    @Override
+    @Override @DoNotRename
     public void initialize(URL location, ResourceBundle resources) {
         for (int i = 0; i < 5; i++) {
             mymap.put(itemToDoOptions1AndOptions3[i], "Logs");
