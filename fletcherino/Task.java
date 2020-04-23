@@ -4,9 +4,7 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Inventory;
-import org.tribot.api2007.Player;
 import org.tribot.api2007.Skills;
-import org.tribot.api2007.types.RSPlayer;
 import scripts.fletcherino.graphics.GUIController;
 import scripts.wastedbro.api.rsitem_services.GrandExchange;
 
