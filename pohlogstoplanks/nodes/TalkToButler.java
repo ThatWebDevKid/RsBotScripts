@@ -22,6 +22,7 @@ public class TalkToButler extends Node {
     }
     public void execute() {
         // First we need to open our settings
+        while(!GameTab.TABS.OPTIONS.isOpen()) { Keyboard.pressKeys(KeyEvent.VK_F10); }
         if (!TabsHandler.openTab(GameTab.TABS.OPTIONS)) {
             if (!Interfaces.isInterfaceSubstantiated(370, 19)) {
                 return;
@@ -29,54 +30,36 @@ public class TalkToButler extends Node {
         }
 
         RSInterface viewHouseOptions = Interfaces.get(261, 100);
-        while (!InterfaceHandler.clickInterface(viewHouseOptions)) {
-            General.sleep(500);
-
-            if (Interfaces.isInterfaceSubstantiated(370, 19)) {
-                break;
-            }
-        }
-
-        General.sleep(500, 1000);
+        while (!InterfaceHandler.clickInterface(viewHouseOptions) && !Interfaces.isInterfaceSubstantiated(370, 19));
 
         Timing.waitCondition(() -> {
-            General.sleep(500);
+            General.sleep(50);
             return Interfaces.isInterfaceSubstantiated(370, 19);
-        }, General.random(2000, 3000));
+        }, General.random(3000, 4000));
 
-
-        General.sleep(500, 1000);
 
         RSInterface callServant = Interfaces.get(370, 19);
-        while (!InterfaceHandler.clickInterface(callServant)) {
-            General.sleep(500);
-        }
-
-        General.sleep(500, 1000);
+        while (!InterfaceHandler.clickInterface(callServant) );
 
         RSNPC[] servant = NPCs.findNearest("Demon butler");
-
-        if (NPCChat.getOptions() == null && NPCChat.getMessage() == null) {
-            if (!NPCHandler.interactWithNPC(servant, "Talk-to")) {
-                return;
+        if (!Timing.waitCondition(() -> NPCChat.getOptions() != null || NPCChat.getMessage() != null, General.random(2000, 3000))) {
+            while (!NPCHandler.interactWithNPC(servant, "Talk-to")) {
+                General.sleep(50, 100);
             }
         }
 
         if (PohLogsToPlanks.needsReset) {
-            while (true) {
-                boolean itemClicked = ItemHandler.clickOnInventoryItem(Inventory.find(PohLogsToPlanks.logType));
-                General.sleep(1000, 2000);
-                boolean npcClicked = NPCHandler.interactWithNPC(servant, "Use " + PohLogsToPlanks.logType + " ->");
-
-                if (itemClicked && npcClicked) {
-                    break;
-                }
+            Keyboard.pressKeys(KeyEvent.VK_ESCAPE);
+            boolean npcClicked = false;
+            while (!npcClicked) {
+                Timing.waitCondition(() -> ItemHandler.clickOnInventoryItem(Inventory.find(PohLogsToPlanks.logType)), General.random(5000, 6000));
+                npcClicked =  NPCHandler.interactWithNPC(servant, "Use " + PohLogsToPlanks.logType + " ->");
             }
             PohLogsToPlanks.needsReset = false;
         }
 
-        General.sleep(500, 1000);
 
+        Timing.waitCondition(() -> NPCChat.getOptions() != null || NPCChat.getMessage() != null, General.random(5000, 10000));
         RSInterface enterAmountInterface = Interfaces.get(162,44);
         while ((NPCChat.getOptions() != null || NPCChat.getMessage() != null) || Interfaces.isInterfaceSubstantiated(enterAmountInterface)) {
             if (Interfaces.isInterfaceSubstantiated(enterAmountInterface)) {
@@ -85,9 +68,12 @@ public class TalkToButler extends Node {
                 Keyboard.typeKeys('1');
                 InterfaceHandler.clickHereToContinue();
             } else if (NPCChat.getMessage() != null) {
+                if (NPCChat.getMessage().equalsIgnoreCase("Oh dear, I can't afford that.")) {
+                    PohLogsToPlanks.scriptRunning = false;
+                }
                 Keyboard.pressKeys(KeyEvent.VK_SPACE);
             }
-            General.sleep(1200, 1500);
+            Timing.waitCondition(() -> (NPCChat.getOptions() != null || NPCChat.getMessage() != null) || Interfaces.isInterfaceSubstantiated(enterAmountInterface), General.random(1000, 1200));
         }
 
     }

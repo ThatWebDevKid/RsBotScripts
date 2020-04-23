@@ -12,23 +12,14 @@ import java.util.*;
 
 import com.allatori.annotations.DoNotRename;
 
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.apache.commons.io.FilenameUtils;
 import org.tribot.api.General;
 import org.tribot.util.Util;
-import scripts.API.Node;
 import scripts.fletcherino.Task;
-
-import javax.xml.soap.Text;
 
 
 /**
@@ -103,23 +94,11 @@ public class GUIController implements Initializable {
 
     @FXML
     private TextField nameProfile;
-//
-//    @FXML
-//    private Button addTask;
-//
+
     @FXML
     private ListView tasksList;
 
     private String nameProfileChosen = "";
-
-//    @FXML
-//    private Button removeTask;
-//
-//    @FXML
-//    private Button saveTasks;
-//
-//    @FXML
-//    private Button loadTasks;
 
     @FXML
     private void selectProfileOnChange() {
@@ -316,7 +295,7 @@ public class GUIController implements Initializable {
         File directory= new File(Util.getWorkingDirectory().getAbsolutePath());
         for (File file : directory.listFiles())
         {
-            if (FilenameUtils.getExtension(file.getName()).equals("txt"))
+            if (FilenameUtils.getExtension(file.getName()).equals("txt") && !file.getName().equalsIgnoreCase("LastSelectedProfile.txt"))
             {
                 selectProfile.getItems().add(file.getName().substring(0, file.getName().lastIndexOf('.')));
             }

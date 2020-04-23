@@ -18,6 +18,7 @@ public class Antiban {
     // Used in action conditions
     private static boolean shouldHover = false;
     private static boolean shouldOpenMenu = false;
+    private static int run_at;
 
     // static method to create instance of Singleton class
     public static ABCUtil getInstance()
@@ -54,6 +55,7 @@ public class Antiban {
         if (getInstance().shouldLeaveGame())
             getInstance().leaveGame();
     }
+
 
     /**
      * Updates the variables.
@@ -108,6 +110,11 @@ public class Antiban {
                 Clicking.hover(target);
             }
         }
+    }
+
+    public static int getRunAtEnergy() {
+        run_at = getInstance().generateRunActivation();
+        return run_at;
     }
 
     // 4. Reaction times  ______________________________________________________________________________________________________________________

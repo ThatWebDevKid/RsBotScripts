@@ -1,22 +1,28 @@
 package scripts.pohlogstoplanks;
 
 import org.tribot.api.General;
-import org.tribot.api2007.Inventory;
-import org.tribot.api2007.Login;
-import org.tribot.api2007.NPCChat;
-import org.tribot.api2007.Skills;
+import org.tribot.api.Timing;
+import org.tribot.api.input.Mouse;
+import org.tribot.api2007.*;
+import org.tribot.api2007.types.RSArea;
+import org.tribot.api2007.types.RSInterface;
+import org.tribot.api2007.types.RSTile;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.Arguments;
 import org.tribot.script.interfaces.Painting;
+import scripts.API.InterfaceHandler;
 import scripts.API.Node;
 import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.api_lib.models.DaxCredentials;
 import scripts.dax_api.api_lib.models.DaxCredentialsProvider;
+import scripts.dax_api.shared.helpers.WorldHelper;
 import scripts.fluffeepaint.FluffeesPaint;
 import scripts.fluffeepaint.PaintInfo;
+import scripts.fruitytootie.nodes.WorldHop;
+import scripts.pohlogstoplanks.graphics.FXMLString;
+import scripts.pohlogstoplanks.graphics.GUI;
 import scripts.pohlogstoplanks.nodes.Bank;
-import scripts.pohlogstoplanks.nodes.Restock;
 import scripts.pohlogstoplanks.nodes.TalkToButler;
 import scripts.pohlogstoplanks.nodes.Teleport;
 
@@ -38,16 +44,18 @@ import java.util.HashMap;
 )
 
 
-public class PohLogsToPlanks extends Script implements Painting, Arguments {
+public class PohLogsToPlanks extends Script implements Painting {
+    private GUI gui;
     public static double totalPlanks = 0;
     public static ArrayList<Node> Nodes = new ArrayList<>();
     public static boolean noMoreLogs = false;
-    public static String bank;
+    public static RSArea bank;
     public static String logType;
     public static int logTypeNoted;
     public static String plankType;
     private boolean scriptStarted = false;
     public static boolean needsReset = true;
+    public static boolean scriptRunning = true;
     private FluffeesPaint FLUFFEES_PAINT = new FluffeesPaint(new PaintInfo() {
         @Override
         public String[] getPaintInfo() {
@@ -72,43 +80,13 @@ public class PohLogsToPlanks extends Script implements Painting, Arguments {
             Login.login();
         }
 
+
         Collections.addAll(
                 Nodes,
                 new Bank(),
                 new Teleport(),
-                new TalkToButler(),
-                new Restock()
+                new TalkToButler()
         );
-    }
-
-    @Override
-    public void passArguments(HashMap<String, String> hashMap) {
-        if (hashMap.containsKey("custom_input") && hashMap.get("custom_input") != null && !hashMap.get("custom_input").isEmpty()) {
-            String args = hashMap.get("custom_input");
-            String[] argsSplit = args.split(",");
-            String logTypeArgs = argsSplit[0].split("=")[1].toLowerCase();
-
-            switch (logTypeArgs) {
-                case "mahogany":
-                    logType = "Mahogany logs";
-                    logTypeNoted = 8836;
-                    plankType = "Mahogany plank";
-                    break;
-                case "teak":
-                    logType = "Teak logs";
-                    logTypeNoted = 6334;
-                    plankType = "Teak plank";
-                    break;
-                default:
-                    logType = "Oak logs";
-                    logTypeNoted = 1522;
-                    plankType = "Oak plank";
-            }
-        } else {
-            logType = "Oak logs";
-            logTypeNoted = 1522;
-            plankType = "Oak plank";
-        }
     }
 
 
@@ -123,11 +101,20 @@ public class PohLogsToPlanks extends Script implements Painting, Arguments {
     @Override
     public void run() {
         setLoginBotState(false);
+        Mouse.setSpeed(150);
+        gui = new GUI(FXMLString.get);
+        gui.show();
+        while (gui.isOpen()) {
+            General.sleep(500);
+        }
+
         onStart();
         scriptStarted = true;
-        while (true) {
+        while (scriptRunning) {
             loop();
         }
+        General.println("Script has ended. Goodbye!");
+        Login.logout();
     }
 
     private void loop() {
@@ -135,7 +122,7 @@ public class PohLogsToPlanks extends Script implements Painting, Arguments {
             if (node.validate()) {
                 node.printStatus();
                 node.execute();
-                General.sleep(1000, 1500);
+                General.sleep(500);
             }
         }
     }

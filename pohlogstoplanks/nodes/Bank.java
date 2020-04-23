@@ -10,27 +10,30 @@ import scripts.pohlogstoplanks.Constants;
 import scripts.pohlogstoplanks.PohLogsToPlanks;
 
 public class Bank extends Node {
-
+    boolean hasPlanks;
+    boolean hasNotedLogs;
     public void printStatus() {
         General.println("Banking!");
     }
     public boolean validate() {
-        return Constants.LUMBRIDGE_AREA.contains(Player.getPosition()) && (Inventory.getAll().length <= 4
-                || Inventory.find(PohLogsToPlanks.plankType).length > 0 || Inventory.find(PohLogsToPlanks.logTypeNoted).length > 0);
+        hasPlanks =  Inventory.find(PohLogsToPlanks.plankType).length > 0;
+        hasNotedLogs = Inventory.find(PohLogsToPlanks.logTypeNoted).length > 0;
+        return PohLogsToPlanks.bank.contains(Player.getPosition()) && (Inventory.getAll().length <= 4
+                || hasPlanks || hasNotedLogs);
 
     }
     public void execute() {
         // Firstly we must open the bank screen
-        while (!Banking.openBank());
+        while (!Banking.openBank() && !Banking.isBankScreenOpen());
 
         // First we must deposit all of our planks if any in our inventory
-        if (Inventory.find(PohLogsToPlanks.plankType).length > 0) {
+        if (hasPlanks) {
             if (!Banking.deposit(0, PohLogsToPlanks.plankType)) {
                 return;
             }
         }
 
-        if (Inventory.find(PohLogsToPlanks.logTypeNoted).length > 0) {
+        if (hasNotedLogs) {
             if (!Banking.deposit(0, PohLogsToPlanks.logTypeNoted)) {
                 return;
             }
@@ -43,25 +46,27 @@ public class Bank extends Node {
         }
 
         Timing.waitCondition(() -> {
-            General.sleep(500);
+            General.sleep(50);
             return Inventory.getAll().length <= 3;
         }, General.random(1000, 2000));
 
         if (Banking.find(PohLogsToPlanks.logType).length <= 0) {
             PohLogsToPlanks.noMoreLogs = true;
+            PohLogsToPlanks.scriptRunning = false;
+            return;
         }
 
-        // Now we must withdraw all oak logs
+        // Now we must withdraw all logs
         Banking.withdraw(0, PohLogsToPlanks.logType);
 
         Timing.waitCondition(() -> {
-            General.sleep(500);
+            General.sleep(50);
             return Inventory.getAll().length > 3;
         }, General.random(1000, 2000));
 
         PohLogsToPlanks.totalPlanks += Inventory.find(PohLogsToPlanks.logType).length;
 
         // Now close bank screen
-        while (!Banking.close());
+        while (!Banking.close() && Banking.isBankScreenOpen());
     }
 }
