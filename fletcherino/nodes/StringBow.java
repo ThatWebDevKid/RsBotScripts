@@ -95,6 +95,7 @@ public class StringBow extends Node {
         RSItem[] bows = Inventory.find(task.getItemToDo());
         RSNPC[] bankers = NPCs.findNearest("Banker");
         task.setSluppliesToFletch(task.getSuppliesToFletch() - Math.min(bows.length, bowStrings.length));
+        Fletcherino.totalItemsFletched += Math.min(bowStrings.length, bows.length);
         while (bowStrings.length > 0 && bows.length > 0) {
             if (GrandExchange.getWindowState() != null) {
                 while (!GrandExchange.close()) {
@@ -149,6 +150,5 @@ public class StringBow extends Node {
             bowStrings = Inventory.find("Bow string");
             bows = Inventory.find(task.getItemToDo());
         }
-        Fletcherino.totalItemsFletched += amountToWithdraw;
     }
 }

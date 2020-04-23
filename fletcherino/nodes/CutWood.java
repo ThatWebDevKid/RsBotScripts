@@ -99,7 +99,7 @@ public class CutWood extends Node {
         RSItem[] logs = Inventory.find(task.getLogType());
         RSNPC[] bankers = NPCs.findNearest("Banker");
         task.setSluppliesToFletch(task.getSuppliesToFletch() - logs.length);
-
+        Fletcherino.totalItemsFletched += logs.length;
         while (logs.length > 0) {
             if (GrandExchange.getWindowState() != null) {
                 while (!GrandExchange.close()) {
@@ -172,6 +172,5 @@ public class CutWood extends Node {
                 logs = Inventory.find(task.getLogType());
             }
         }
-        Fletcherino.totalItemsFletched += amountToWithdraw;
     }
 }
