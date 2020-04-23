@@ -39,10 +39,16 @@ public class TalkToButler extends Node {
 
 
         RSInterface callServant = Interfaces.get(370, 19);
-        while (!InterfaceHandler.clickInterface(callServant) );
+        while (!InterfaceHandler.clickInterface(callServant));
 
         RSNPC[] servant = NPCs.findNearest("Demon butler");
         if (!Timing.waitCondition(() -> NPCChat.getOptions() != null || NPCChat.getMessage() != null, General.random(2000, 3000))) {
+            RSInterface closeHouseOptions = Interfaces.get(370, 21);
+            while (Interfaces.isInterfaceSubstantiated(closeHouseOptions)) {
+                General.sleep(500, 750);
+                InterfaceHandler.clickInterface(closeHouseOptions);
+            }
+
             while (!NPCHandler.interactWithNPC(servant, "Talk-to")) {
                 General.sleep(50, 100);
             }

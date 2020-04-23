@@ -24,7 +24,7 @@ public class Teleport extends Node {
         numOflogs = Inventory.find(PohLogsToPlanks.logType).length;
         atBankingLocation = PohLogsToPlanks.bank.contains(Player.getPosition());
         atHome = Objects.findNearest(ObjectHandler.DEFAULT_DISTANCE, "Portal").length > 0;
-        return ( numOflogs > 0 &&  atBankingLocation && !Banking.isBankScreenOpen()) || (atHome &&  numOflogs <= 0);
+        return ( numOflogs > 0 &&  atBankingLocation) || (atHome &&  numOflogs <= 0);
 
     }
 
@@ -34,6 +34,10 @@ public class Teleport extends Node {
         if (lawRunes.length <= 0) {
             PohLogsToPlanks.scriptRunning = false;
             return;
+        }
+
+        if (Banking.isBankScreenOpen()) {
+            while (!Banking.close());
         }
 
         Keyboard.pressKeys(KeyEvent.VK_F6);
