@@ -43,7 +43,7 @@ public class Teleport extends Node {
         Keyboard.pressKeys(KeyEvent.VK_F6);
         if (numOflogs > 0 && atBankingLocation) {
             if (Magic.selectSpell("Teleport to House")) {
-                General.sleep(750);
+                General.sleep(100);
                 Timing.waitCondition(() -> {
                     Antiban.getInstance().leaveGame();
                     return Player.getAnimation() == -1;
@@ -61,7 +61,7 @@ public class Teleport extends Node {
             }
 
             if (spellSuccessfull){
-                General.sleep(750);
+                General.sleep(100);
                 Timing.waitCondition(() -> {
                     Antiban.getInstance().leaveGame();
                     return Player.getAnimation() == -1;

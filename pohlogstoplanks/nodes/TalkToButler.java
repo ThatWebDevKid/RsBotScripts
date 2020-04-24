@@ -45,7 +45,7 @@ public class TalkToButler extends Node {
         if (!Timing.waitCondition(() -> NPCChat.getOptions() != null || NPCChat.getMessage() != null, General.random(2000, 3000))) {
             RSInterface closeHouseOptions = Interfaces.get(370, 21);
             while (Interfaces.isInterfaceSubstantiated(closeHouseOptions)) {
-                General.sleep(500, 750);
+                General.sleep(50);
                 InterfaceHandler.clickInterface(closeHouseOptions);
             }
 
