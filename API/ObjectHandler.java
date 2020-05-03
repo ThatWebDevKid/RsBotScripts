@@ -38,6 +38,7 @@ public class ObjectHandler {
     private static boolean rightClickObject (RSObject object, String optionToSelect) {
         if (object.hover()) {
             Mouse.click(GlobalConstants.RIGHT_CLICK);
+            General.sleep(500);
             String optionToSelectFullString = optionToSelect + " " + object.getDefinition().getName();
             if (ChooseOption.isOptionValid(optionToSelectFullString)) {
                 return ChooseOption.select(optionToSelectFullString);

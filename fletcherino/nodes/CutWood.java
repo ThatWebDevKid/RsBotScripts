@@ -50,7 +50,7 @@ public class CutWood extends Node {
         if (!Banking.isBankScreenOpen()) {
             if (Banking.openBank()) {
                 if(!Timing.waitCondition(() -> {
-                    General.sleep(500, 1000);
+                    General.sleep(250, 500);
                     return Banking.isBankScreenOpen();
                 }, General.random(5000, 8000))) {
                     return;
@@ -61,7 +61,7 @@ public class CutWood extends Node {
 
         if (Banking.depositAllExcept("Knife") > 0) {
             Timing.waitCondition(() -> {
-                General.sleep(500, 1000);
+                General.sleep(250, 500);
                 return Inventory.getAll().length <= 1;
             }, General.random(5000, 8000));
         }
@@ -71,7 +71,7 @@ public class CutWood extends Node {
         if (Inventory.find("Knife").length <= 0) {
             if(Banking.withdraw(1, "Knife")) {
                 Timing.waitCondition(() -> {
-                    General.sleep(500, 1000);
+                    General.sleep(250, 500);
                     return Inventory.find("Knife").length > 0;
                 }, General.random(5000, 8000));
             }
@@ -81,7 +81,7 @@ public class CutWood extends Node {
         amountToWithdraw = Math.min(27, amountToWithdraw);
         if (Banking.withdraw(amountToWithdraw, task.getLogType())) {
             Timing.waitCondition(() -> {
-                General.sleep(500, 1000);
+                General.sleep(250, 500);
                 return Inventory.find(task.getLogType()).length > 0;
             }, General.random(3000, 6000));
         }
@@ -90,7 +90,7 @@ public class CutWood extends Node {
 
         if (Banking.close()) {
             Timing.waitCondition(() -> {
-                General.sleep(500, 1000);
+                General.sleep(250, 500);
                 return !Banking.isBankScreenOpen();
             }, General.random(5000, 8000));
         }
@@ -110,7 +110,7 @@ public class CutWood extends Node {
             if (ItemHandler.clickOnInventoryItem(knife)) {
                 if (ItemHandler.clickOnInventoryItem(logs)) {
                     Timing.waitCondition(() -> {
-                        General.sleep(500, 1000);
+                        General.sleep(50, 100);
                         RSInterface[] whatWouldYouLikeToMakeInterfaces2 = {
                                 Interfaces.get(270, 14),
                                 Interfaces.get(270, 15),
@@ -143,12 +143,12 @@ public class CutWood extends Node {
                             Antiban.generateSupportingTrackerInfo((int) averageCuttingWaitTime);
 
                             if (Timing.waitCondition(() -> {
-                                General.sleep(500);
+                                General.sleep(50, 100);
                                 RSPlayer player = Player.getRSPlayer();
                                 return player != null && player.getAnimation() != -1;
                             }, General.random(20000, 25000))) {
                                 Timing.waitCondition(() -> {
-                                    General.sleep(500);
+                                    General.sleep(50, 100);
 
                                     Antiban.checkTimedActions();
                                     Antiban.executeHoverOpenNPC(bankers, false);

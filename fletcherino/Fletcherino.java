@@ -82,10 +82,9 @@ public class Fletcherino extends Script implements Painting {
                     if (node.validate(task)) {
                         node.printStatus(task);
                         node.execute(task);
-                        General.sleep(General.random(2500, 3000));
+                        General.sleep(General.random(250, 500));
                     }
                 }
-                General.sleep(1000);
             }
         }
         Login.logout();
